@@ -1,104 +1,114 @@
 import React, { useState } from 'react';
 
-interface SignupForm {
-    email: string;
-    username: string;
-    password: string;
+type SignupForm = {
+  email: string;
+  username: string;
+  password: string;
 }
 
 const SignupPage = () => {
-    const [formData, setFormData] = useState<SignupForm>({
-        email: '',
-        username: '',
-        password: '',
-    });
+  const [formData, setFormData] = useState<SignupForm>({
+    email: '',
+    username: '',
+    password: '',
+  });
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [event.target.name]: event.target.value });
-    };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Form validation and submission logic here
-        console.log('Email:', formData.email);
-        console.log('Username:', formData.username);
-        console.log('Password:', formData.password);
-    };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Form validation and submission logic here
+    console.log('Email:', formData.email);
+    console.log('Username:', formData.username);
+    console.log('Password:', formData.password);
+  };
 
-    return (
-        <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold">Sign up to see the mirage world</h1>
-                </div>
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-700">
-                    <svg className="-h-6 -w-6 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.51 2.75L13.24 12l3.27 9.25H3.76L0 12l3.76-9.25z" />
-                    </svg>
-                    <span>Log in with Google</span>
-                </button>
-                <div className="text-center">
-                    <span className="text-gray-500">OR</span>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                            Username
-                        </label>
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            value={formData.username}
-                            onChange={handleChange}
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full flex justify-center items-center px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-700"
-                    >
-                        Sign up
-                    </button>
-                </form>
-                <div className="text-sm text-center">
-                    <span>Have an account? </span>
-                    <a href="/login" className="font-medium text-blue-500 hover:text-blue-600">
-                        Log in here
-                    </a>
-                </div>
+  return (
+    <>
+      <div className="min-h-screen
+       flex flex-col items-center justify-center ">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-96 max-w-lg">
+          <h2 className="text-4xl font-bold text-center mb-6 mt-[50px]  " style={{ fontFamily: 'Kavoon, cursive' }}>Anonymous</h2>
+          <p className=" text-1xl text-center mb-6 opacity-50">Sign up to see <br /> the mirage world</p>
+          <div className="mb-6">
+            <a
+              href="#"
+              className="w-full py-2 px-4 text-blue mt-[-2px] flex items-center justify-center"
+            >
+              <img
+                src="https://img.icons8.com/color/16/000000/google-logo.png"
+                alt="Google"
+                className="mr-2"
+              />
+              Log in with Google
+            </a>
+          </div>
+          <div className="relative flex py-5 items-center mb-6">
+            <div className="flex-grow border-t border-gray-400"></div>
+            <span className="flex-shrink mx-4 text-gray-400">OR</span>
+            <div className="flex-grow border-t border-gray-400"></div>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
             </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Username"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+            <div className="mb-6">
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-full py-2 px-4 text-white rounded-lg shadow-md"
+                style={{ backgroundColor: '#29DFB3' }}
+              >
+                Sign up
+              </button>
+            </div>
+          </form>
+
+        </div> 
+        <div className=" w-full  max-w-md mt-2 h-20 items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg h-2 items-center justify-center ">
+            <p className="text-center mt-[-11px]">
+              Have an account?{' '}
+              <a href="/login" className="text-blue-600 hover:underline">
+                Log in
+              </a>
+            </p>
+          </div>
         </div>
-    );
+      </div>
+
+    </>
+  );
+
 };
 
 export default SignupPage;
+ 
