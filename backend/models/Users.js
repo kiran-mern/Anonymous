@@ -1,20 +1,24 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/database");
+const { sequelize }= require("../config/database");
 
 sequelize.options.logging = false;
 
 const Users = sequelize.define("Users", {
-    user_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-    },
+    // user_id: {
+    //     type: DataTypes.INTEGER,
+    //     autoIncrement: true,
+    //     primaryKey: true,
+    // },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        primaryKey: true,
+
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true,
         validate: {
             isEmail: true,
         }
