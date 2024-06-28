@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,6 +11,7 @@ type SignupForm = {
 }
 
 const SignupPage = () => {
+  const [searchParams]= useSearchParams();
   const navigate= useNavigate();
   const [email,setEmail]=useState('')
   const [name,setName]=useState('')
@@ -25,20 +26,21 @@ const SignupPage = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^.{6,}$/;
 
-    if (!name.trim() || !namePattern.test(name)) {
-      toast.error("Name have minimum 3 letters");
-      return;
-  }
+    
   if (!email.trim() || !emailPattern.test(email)) {
       toast.error("Invalid email format");
       return;
   }
+  if (!name.trim() || !namePattern.test(name)) {
+    toast.error("Name have minimum 3 letters");
+    return;
+}
   if (!password.trim() || !passwordPattern.test(password)) {
       toast.error("Password have minimum 6 characters");
       return;
   }
     try{
-      const response=axios.post('http://localhost:3000/users/signup',
+      const response=axios.post('http://localhost:3000/user/signup',
         {name,email,password}
       )
       console.log(response,'response');
@@ -56,6 +58,27 @@ const SignupPage = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const verifyEmail = async () => {
+        const token = searchParams.get('token');
+        console.log('token',token);
+        
+        if (token) {
+            try {
+                const response = await axios.post(`http://localhost:3000/user/verify?token=${token}`);
+                if (response.status === 200) {
+                    navigate('/email'); // Redirect to success page or login page
+                }
+            } catch (error) {
+                console.error('Verification failed', error);
+                navigate('/error'); // Redirect to error page
+            }
+        }
+    };
+
+    verifyEmail();
+}, [navigate, searchParams]);
 
   return (
     <>
@@ -85,10 +108,10 @@ const SignupPage = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <input
-                type="email"
+                type="text"
                 name="email"
                 value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e)=>setEmail(e.target.value.trim())}
                 placeholder="Email"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
@@ -98,7 +121,7 @@ const SignupPage = () => {
                 type="text"
                 name="name"
                 value={name}
-                onChange={(e)=>setName(e.target.value)}
+                onChange={(e)=>setName(e.target.value.trim())}
                 placeholder="Username"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
@@ -108,7 +131,7 @@ const SignupPage = () => {
                 type="password"
                 name="password"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e)=>setPassword(e.target.value.trim())}
                 placeholder="Password"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />

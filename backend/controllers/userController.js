@@ -80,6 +80,7 @@ module.exports={
             await User.create(userData);
             console.log('4545');
             await UnverifiedUser.destroy({ where: { email: unverifiedUser.email } });
+            // await verification.sendVerificationEmail(email)
             return res.status(200).json({ message: 'Email verified successfully' });
         } catch (err) {
             return res.status(500).json({ error: 'An error occurred' });
