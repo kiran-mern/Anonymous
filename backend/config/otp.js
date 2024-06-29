@@ -34,7 +34,7 @@ module.exports = {
     },
 
     sendVerificationEmail: async (email, token) => {
-        const verificationLink = `http://localhost:3000/verify?token=${token}`;
+        const verificationLink = await `http://localhost:3000/user/verify?token=${token}`;
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {

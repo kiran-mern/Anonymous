@@ -1,6 +1,7 @@
 const User=require('../models/Users')
 const verification= require('../config/otp')
 const UnverifiedUser=require('../models/Unverified')
+const {token}= require('../utils/jwt')
 const bcrypt= require ('bcrypt')
 const jwt=require('jsonwebtoken')
 module.exports={
@@ -84,6 +85,26 @@ module.exports={
             return res.status(200).json({ message: 'Email verified successfully' });
         } catch (err) {
             return res.status(500).json({ error: 'An error occurred' });
+        }
+    },
+    loginUser:async(req,res)=>{
+        try{
+            const {email,password}=req.body
+            const user= await User.findOne({where:{email}})
+            if(!user){
+                return res.status(400).json({message: 'User not found'})
+            }
+            const match= await bcrypt.compare(password,user.password)
+            if(match){
+                const Token= token(email,user.role)
+                return res.status(200).json({message:'user loggedIn', role:'user', token:'Token'})
+            }else{
+                return res.status(400).json({message:'Invlid password'})
+            }
+
+        }catch(error){
+            return res.status(404).json({message:'unexpected error'})
+
         }
     }
 }

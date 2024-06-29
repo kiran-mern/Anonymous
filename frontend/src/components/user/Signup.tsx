@@ -59,26 +59,26 @@ const SignupPage = () => {
     }
   };
 
-  useEffect(() => {
-    const verifyEmail = async () => {
-        const token = searchParams.get('token');
-        console.log('token',token);
+//   useEffect(() => {
+//     const verifyEmail = async () => {
+//         const token = searchParams.get('token');
+//         console.log('token',token);
         
-        if (token) {
-            try {
-                const response = await axios.post(`http://localhost:3000/user/verify?token=${token}`);
-                if (response.status === 200) {
-                    navigate('/email'); // Redirect to success page or login page
-                }
-            } catch (error) {
-                console.error('Verification failed', error);
-                navigate('/error'); // Redirect to error page
-            }
-        }
-    };
+//         if (token) {
+//             try {
+//                 const response = await axios.post(`http://localhost:3000/user/verify?token=${token}`);
+//                 if (response.status === 200) {
+//                     navigate('/email'); 
+//                 }
+//             } catch (error) {
+//                 console.error('Verification failed', error);
+//                 navigate('/error'); // Redirect to error page
+//             }
+//         }
+//     };
 
-    verifyEmail();
-}, [navigate, searchParams]);
+//     verifyEmail();
+// }, [navigate, searchParams]);
 
   return (
     <>

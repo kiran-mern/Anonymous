@@ -5,4 +5,6 @@ const{signup, verifyEmail}=require('../controllers/userController')
 
 router.post('/signup',signup)
 router.post('/verify',verifyEmail)
+router.get('/verify',verifyEmail)
+
 module.exports = router;

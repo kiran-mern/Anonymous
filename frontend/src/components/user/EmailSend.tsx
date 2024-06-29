@@ -2,8 +2,8 @@ import React from 'react'
 
 const EmailSend  = () => {
   return (
-    <div className=" h-screen  flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-md p-8 max-w-sm h-3/4 text-center">
+    <div className="min-h- flex flex-col items-center justify-center  ">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-96 max-w-xl ">
         <h1 className="text-3xl font-semibold mt-12 " style={{ fontFamily: 'Kavoon, cursive' }}>Anonymous</h1>
         <div className="flex justify-center mb-12">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
