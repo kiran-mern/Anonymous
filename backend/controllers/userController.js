@@ -91,15 +91,16 @@ module.exports={
         try{
             const {email,password}=req.body
             const user= await User.findOne({where:{email}})
+            // console.log(user);
             if(!user){
                 return res.status(400).json({message: 'User not found'})
             }
             const match= await bcrypt.compare(password,user.password)
             if(match){
                 const Token= token(email,user.role)
-                return res.status(200).json({message:'user loggedIn', role:'user', token:'Token'})
+                return res.status(200).json({message:'user loggedIn', role:'user', token:Token})
             }else{
-                return res.status(400).json({message:'Invlid password'})
+                return res.status(400).json({message:'Invalid password'})
             }
 
         }catch(error){

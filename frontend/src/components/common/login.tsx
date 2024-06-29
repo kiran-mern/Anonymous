@@ -1,17 +1,71 @@
 import React,{useState,useEffect} from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {useNavigate,Link} from 'react-router-dom'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Login={
     email: string;
     password: string
 }
+type LoginResponse={
+    token: string;
+    role: 'admin' | 'user';
+    message?: string;
 
-const Login = () => {
+}
+type LoginProps={
+  head: string
+}
+type LoginError = {
+    response: {
+        data: {
+            message: string;
+        };
+    };
+};
+
+const Login:React.FC <LoginProps> = ({head}) => {
 
     const navigate= useNavigate();
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('') 
+const handleLogin= async(e:React.FormEvent)=>{
+  e.preventDefault();
+      try {
+        const response: AxiosResponse<LoginResponse> = await axios.post(`http://localhost:3000/${head==='admin'? 'admin' : 'user'}/login`, {
+          email,
+          password,
+        });
+        handleLoginResponse(response);
+      } catch (error) {
+        handleLoginError(error as LoginError);
+      }
+    };
+
+    const handleLoginResponse  = (response:AxiosResponse<LoginResponse>) => {
+        const token = response.data.token;
+        console.log('restttt',response);
+    
+          if (response.data.role==='admin') {
+            localStorage.setItem("admin", token);
+    
+            navigate('/signup');
+          }else if(response.data.role==='user'){
+            localStorage.setItem("user", token);
+    
+            navigate('/email');
+        }
+    
+        // }
+        //  else {
+        //   toast.error(response.data.message || "Failed to login");
+        // }
+      };
+      const handleLoginError = (error:LoginError) => {
+        console.log(error);
+        toast.error("Failed to login");
+      };
 
   return (
     <div className="min-h-screen flex  items-center justify-center ">
@@ -47,10 +101,13 @@ const [password,setPassword]=useState('')
             <span className="flex-shrink mx-4 text-gray-400">OR</span>
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
-          <form className="space-y-4">
+          <form className="space-y-4" method="POST" onSubmit={handleLogin}>
             <div>
               <input
                 type="text"
+                name='email'
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 placeholder="Email"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
@@ -58,6 +115,10 @@ const [password,setPassword]=useState('')
             <div>
               <input
                 type="password"
+                name='password'
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+
                 placeholder="Password"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
