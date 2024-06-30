@@ -1,10 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
+import Sidebar from '../components/admin/Sidebar'
 const adminRouter = () => {
     return (
         <>
             <Routes>
 
-                <Route />
+                <Route path ='/dash' element={<Sidebar/> } />
             </Routes>
         </>
     )

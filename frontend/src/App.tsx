@@ -3,7 +3,7 @@ import { useState } from 'react'
 // import viteLogo from '/vite.svg'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import UserProvider from './routes/userRouter'
-// import AdminRouter from './routes/adminRouter'
+import AdminRouter from './routes/adminRouter'
 import './App.css'
 
 const App=()=> {
@@ -15,7 +15,7 @@ const App=()=> {
         <Routes>
 
           <Route  path={'/*'}  element={<UserProvider/>} />
-          {/* <Route path={'/admin/*'} element={<AdminRouter />} /> */}
+          <Route path={'/admin/*'} element={<AdminRouter />} />
           <Route />
 
         </Routes>
