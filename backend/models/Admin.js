@@ -2,18 +2,24 @@ const { DataTypes } = require('sequelize')
 const { sequelize } = require('../config/database')
 
 const Admin = sequelize.define("Admin", {
-    admin_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true
-    },
+    // admin_id: {
+    //     type: DataTypes.INTEGER,
+    //     primaryKey: true
+    // },
     email: {
         type: DataTypes.STRING,
+        primaryKey: true,
         allowNull: false
 
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    role:{
+        type:DataTypes.STRING,
+        defaultValue:'admin',
+
     },
     image:{
         type: DataTypes.STRING
@@ -23,7 +29,8 @@ const Admin = sequelize.define("Admin", {
         defaultValue: true
     }
 
-})
+});
+
 // Sync the model with the database
 (async () => {
     try {
