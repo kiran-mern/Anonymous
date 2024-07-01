@@ -4,6 +4,7 @@ const UnverifiedUser=require('../models/Unverified')
 const {token}= require('../utils/jwt')
 const bcrypt= require ('bcrypt')
 const jwt=require('jsonwebtoken')
+const UserPost = require('../models/UserPost')
 module.exports={
     signup:async(req,res)=>{
         console.log(req.body)
@@ -107,5 +108,32 @@ module.exports={
             return res.status(404).json({message:'unexpected error'})
 
         }
+    },
+    userPost:async(req,res)=>{
+        try{
+            const {token,content}=req.body
+            console.log(req.body);
+            const decoded= jwt.verify(token,process.env.SECRET_KEY)
+            console.log(decoded,'okk');
+            const email=decoded.email
+            const user=await User.findOne({where:{email}})
+            console.log(user,'user');
+            const user_id=user.user_id
+            console.log(user_id);
+            if( !user_id || !content){
+                return res.status(400).json({message:'field is missing'})
+            }
+            const newPost= await  UserPost.create({user_id,content})
+            return res.status(200).json({message:'created ',newPost})
+        }
+        catch(error){
+            console.log(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+            
+
+        }
+
+
+
     }
 }

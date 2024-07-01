@@ -9,6 +9,7 @@ const UnverifiedUser = sequelize.define('UnverifiedUser', {
     },
     name: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false
     },
     password: {
