@@ -5,11 +5,14 @@ function authenticateToken(req, res, next) {
     const token = req.headers.authorization || req.body;
     console.log("auth",token);
   
-    if (token == null) return res.sendStatus(400);
+    if (token.token == null) return res.sendStatus(400);
   
-    jwt.verify(token, process.env.secret_key, (err, user) => {
-      if (err) 
-      return res.sendStatus(400);
+    jwt.verify(token.token, process.env.secret_key, async(err, user) => {
+      if (err) {
+        console.log(err);
+
+        return res.sendStatus(400);
+      }
   
       req.user = user;
       console.log(user);
