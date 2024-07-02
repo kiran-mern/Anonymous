@@ -39,6 +39,10 @@ const Users = sequelize.define("Users", {
     image: {
         type: DataTypes.STRING,
     },
+    status:{
+        type:DataTypes.STRING,
+        defaultValue: 'Happy'
+    }
     
 });
 
