@@ -54,7 +54,7 @@ const Leftbar = () => {
                   Deactivate
                 </button>
               </div>
-            )}
+            )}   
               {showAppearance && (
         <div className="mt-2 w-48 bg-gray-800 rounded-lg shadow-lg px-4 py-2">
           <p className="text-white mb-2">Appearance</p>

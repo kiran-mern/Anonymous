@@ -9,6 +9,6 @@ router.post('/verify',verifyEmail)
 router.get('/verify',verifyEmail)
 router.post('/login',loginUser)
 router.post('/createPost',userPost)
-router.post('/setStatus',userStatus)
+router.post('/setStatus',isAuth,userStatus)
 
 module.exports = router;

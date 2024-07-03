@@ -140,10 +140,12 @@ module.exports = {
 
     userStatus: async (req, res) => {
         try {
-            const { email } = req.body
+            const { email } = req.user
+            const{feeling}=req.body
+            console.log(feeling,'aacc');
             // const user = await User.findOne({ where: { email } })
             // console.log(user.status);
-            const ab=await uHelpers.setStatus(email)
+            const ab=await uHelpers.setStatus(email,feeling)
             console.log(ab,'aa');
             
 

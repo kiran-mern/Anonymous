@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
-    // console.log(req.headers);
-    const token = req.headers.authorization || req.body;
+    console.log(req.headers.authorization);
+    const token = req.headers.authorization;
     console.log("auth",token);
   
-    if (token.token == null) return res.sendStatus(400);
+    if (token == null) return res.sendStatus(400);
   
-    jwt.verify(token.token, process.env.secret_key, async(err, user) => {
+    jwt.verify(token, process.env.secret_key, async(err, user) => {
       if (err) {
         console.log(err);
 
