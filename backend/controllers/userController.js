@@ -133,9 +133,6 @@ module.exports = {
 
 
         }
-
-
-
     },
 
     userStatus: async (req, res) => {
@@ -147,12 +144,15 @@ module.exports = {
             // console.log(user.status);
             const ab=await uHelpers.setStatus(email,feeling)
             console.log(ab,'aa');
-            
-
-        } catch {
-
+        } catch (err){
+            console.log(err);
         }
-
+    },
+    groupCreation:async(req,res)=>{
+        const {name,image}= req.body;
+        console.log(req.body);
+        const creation= await uHelpers.gCreation(name,image) 
+        console.log(creation);
 
 
     }

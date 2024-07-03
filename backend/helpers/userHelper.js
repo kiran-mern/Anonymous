@@ -1,4 +1,5 @@
 const User = require('../models/Users')
+const Group= require('../models/Group')
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -21,10 +22,13 @@ module.exports = {
 
             console.log('error when updating the status', err);
         }
-
-
-
-
+    },
+    gCreation: async (data,img)=>{
+        const create= await Group.create({
+            groupName:data ,image: img
+        })
+        console.log('created');
+        return create
     }
 
 
