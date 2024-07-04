@@ -8,16 +8,13 @@ import AvailableGroup from './AvailableGroup';
 const RightSidebar: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [creGroup, setCreGroup] = useState(false);
-    const [showAvailableGroup,setShowAvailableGroup]= useState(false)
     
     const [feeling, setFeeling] = useState('')
 
     const openCre = () => setCreGroup(true);
     const closeCre=()=>setCreGroup(false);
-    // const openAll=()=>set
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-    const toggleAvailableGroup=()=>setShowAvailableGroup (!showAvailableGroup)
     const handleConfirmFeeling = (feeling: string) => {
         setFeeling(feeling);
         closeModal();
