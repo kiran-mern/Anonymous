@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FeelingModal from './FeelingsModal';
+import CreateGroup from './CreateGroup';
 // import { useModalStore } from '../../zustand/store';
 
-const RightSidebar = () => {
+const RightSidebar: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [creGroup, setCreGroup] = useState(false)
     const [feeling, setFeeling] = useState('')
 
+    const openCre = () => setCreGroup(true);
+    const closeCre=()=>setCreGroup(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const handleConfirmFeeling = (feeling: string) => {
         setFeeling(feeling);
         closeModal();
     };
-
+    const handleCreateGroup = (groupName: string, members: string[]) => {
+        console.log('Group created:', groupName, members);
+        closeCre();
+      };
     return (
         <div className="w-1/6 h-screen bg-black text-white p-4 border text-center">
             <div className="flex flex-col items-center">
@@ -22,11 +29,12 @@ const RightSidebar = () => {
                 <ul className="w-full">
                     <li className="mb-4"><Link to="/find" className="text-white">Find Connections</Link></li>
                     <li className="mb-4"><button className="text-white" onClick={openModal} >Status</button></li>
-                    <li className="mb-4"><Link to="/create/group" className="text-white">Create group</Link></li>
+                    <li className="mb-4"><button className="text-white" onClick={openCre} >Create group</button></li>
                     <li className="mb-4"><Link to="/groups" className="text-white">Groups</Link></li>
                 </ul>
             </div>
-            <FeelingModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirmFeeling}/>
+            <FeelingModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirmFeeling} />
+            <CreateGroup isOpen={creGroup} onClose={closeCre} onCreateGroup={handleCreateGroup} />
         </div>
     );
 };
