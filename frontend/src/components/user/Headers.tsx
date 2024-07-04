@@ -16,7 +16,7 @@ const Header = () => {
     const navigate = useNavigate()
     const closeModal = () => {
         setShowModal(false);
-        navigate('/side');
+        navigate('/home');
     };
 
     const submitPost = async (e) => {

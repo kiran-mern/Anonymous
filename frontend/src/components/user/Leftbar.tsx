@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate ,Link } from 'react-router-dom';
 import { useModalStore } from '../../zustand/store';
 
+
 const Leftbar = () => {
+  const navigate=useNavigate();
   const { setShowModal } = useModalStore();
   const [showDropdown, setShowDropdown] = useState(false)
   const [showAppearance, setShowAppearance] = useState(false)
@@ -23,8 +25,15 @@ const Leftbar = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     // setShowAppearance(false)
+  }
+  const logout=()=>{
+    localStorage.clear()
+    navigate('/login')
+    
 
   }
+
+
   return (
     <div className="w-1/6 h-screen bg-black text-white p-4  border" >
       <h1 className="text-2xl font-bold mb-6 mt-20 flex justify-center" style={{ fontFamily: 'Kavoon, cursive' }}>Anonymous</h1>
@@ -43,7 +52,7 @@ const Leftbar = () => {
             <button className="text-white" onClick={toggleDropdown}>More</button>
             {showDropdown && (
               <div className="mt-2 w-48 bg-gray-800 rounded-lg shadow-lg">
-                <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700" onClick={() => {/* Logout logic */ }}>
+                <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700" onClick={logout}>
                   Logout
                 </button>
                 <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700" onClick={handleAppearanceClick}>

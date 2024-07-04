@@ -12,12 +12,14 @@ const Login = () => {
     async function isValid(){
       if(token){
         try{
-          const response= await axios.get('http://localhost:3000/user/login',{
+          const response= await axios.post('http://localhost:3000/user/login',{
             headers:{
-              Authorization: `${token}`
+              authorization: `${token}`
             }
           })
-          navigate('/email')
+          console.log(response,'aappaa');
+          
+          navigate('/home')
 
 
         }catch(error){

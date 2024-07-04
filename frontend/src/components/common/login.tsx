@@ -54,7 +54,7 @@ const handleLogin= async(e:React.FormEvent)=>{
           }else if(response.data.role==='user'){
             localStorage.setItem("user", token);
     
-            navigate('/email');
+            navigate('/home');
         }
     
         // }
