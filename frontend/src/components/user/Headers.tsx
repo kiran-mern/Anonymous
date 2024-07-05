@@ -3,10 +3,11 @@ import Rightbar from './Rightbar'
 import Post from './Post';
 import { useModalStore } from '../../zustand/store';
 import CreatePost from './CreatePost';
+import DeactivateModal from './DeactivateModal';
 
 const Header = () => {
 
-    const { showModal } = useModalStore();
+    const { showModal ,isOpen} = useModalStore();
     return (
         <div className="flex">
             <Leftbar />
@@ -24,6 +25,7 @@ const Header = () => {
             </div>
             <Rightbar />
             {showModal && <CreatePost />}
+            {isOpen && <DeactivateModal/> }
             
         </div>
     );

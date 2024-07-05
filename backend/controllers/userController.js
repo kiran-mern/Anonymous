@@ -163,7 +163,6 @@ module.exports = {
         const user=await uHelpers.findUser(email)
         console.log(user,'user')
         const deactivate=await uHelpers.isActive(email)
-
-
+        return res.status(200).json({message:'deactivated',deactivate})
     }
 }

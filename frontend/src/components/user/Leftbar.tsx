@@ -5,7 +5,7 @@ import { useModalStore } from '../../zustand/store';
 
 const Leftbar  = () => {
   const navigate = useNavigate();
-  const { setShowModal } = useModalStore();
+  const { setShowModal,setIsOpen } = useModalStore();
   const [showDropdown, setShowDropdown] = useState(false)
   const [showAppearance, setShowAppearance] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -14,6 +14,11 @@ const Leftbar  = () => {
     e.preventDefault();
     setShowModal(true);
   };
+
+  const handleDeactivate=()=>{
+    setIsOpen(true)
+
+  }
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
     setShowAppearance(false)
@@ -59,7 +64,7 @@ const Leftbar  = () => {
                   Appearance
                 </button>
 
-                <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700" onClick={() => {/* Deactivate logic */ }}>
+                <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700" onClick={handleDeactivate}>
                   Deactivate
                 </button>
               </div>
