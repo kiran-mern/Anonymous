@@ -27,15 +27,8 @@ const FeelingsModal = ({ isOpen, onClose,onConfirm }) => {
         console.log(err);
         onConfirm(selectedFeeling);
         onClose();
-        
-
     }
-
-
-    
   };
-
-
   return (
     <>
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

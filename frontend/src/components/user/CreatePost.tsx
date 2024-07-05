@@ -3,7 +3,7 @@ import { useModalStore } from '../../zustand/store'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const CreatePost = () => {
+const CreatePost: React.FC = () => {
 
     const [content, setContent] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -42,6 +42,7 @@ const CreatePost = () => {
         }
 
     }
+    if (!showModal) return null;
     return (
         <>
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
