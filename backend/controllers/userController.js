@@ -100,6 +100,7 @@ module.exports = {
             const match = await bcrypt.compare(password, user.password)
             if (match) {
                 const Token = token(email, user.role)
+                console.log(Token);
                 return res.status(200).json({ message: 'user loggedIn', role: 'user', token: Token })
             } else {
                 return res.status(400).json({ message: 'Invalid password' })
@@ -153,6 +154,15 @@ module.exports = {
         console.log(req.body);
         const creation= await uHelpers.gCreation(name,image) 
         console.log(creation);
+
+
+    },
+    deactivate:async(req,res)=>{
+        const {email}= req.user
+
+        const user=await uHelpers.findUser(email)
+        console.log(user,'user')
+        const deactivate=await uHelpers.isActive(email)
 
 
     }

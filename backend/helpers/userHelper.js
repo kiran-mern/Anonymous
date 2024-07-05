@@ -29,7 +29,25 @@ module.exports = {
         })
         console.log('created');
         return create
+    },
+    findUser:async(data)=>{
+        const user= await User.findOne({where:{email:data}})
+        return user
+    },
+    isActive:async(data)=>{
+        try{
+            const change= await User.update({isActive:false},{where:{email:data}})
+            return change
+
+        }
+        catch(err){
+            console.error('Error while deactivating',err)
+            throw err
+
+        }
+       
     }
+    
 
 
 }
