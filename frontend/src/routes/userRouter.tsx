@@ -5,6 +5,7 @@ import Login from '../components/common/login'
 import Home from '../pages/User/Home'
 import AvailableGroup from '../pages/User/AvailableGroup'
 import Modal from '../components/user/CreatePost'
+import Deactivate from '../components/user/DeactivateModal'
 const userRouter = () => {
     return (
         <>
@@ -20,6 +21,7 @@ const userRouter = () => {
 
             </Routes>
             <Modal/>
+            <Deactivate/>
         </>
     )
 }

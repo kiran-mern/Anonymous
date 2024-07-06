@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const uHelpers=require('../helpers/userHelper')
 const jwt = require('jsonwebtoken')
 const UserPost = require('../models/UserPost')
+const Group = require('../models/Group')
 module.exports = {
     signup: async (req, res) => {
         console.log(req.body)
@@ -159,10 +160,18 @@ module.exports = {
     },
     deactivate:async(req,res)=>{
         const {email}= req.user
+        const{onConfirm}=req.body
 
         const user=await uHelpers.findUser(email)
         console.log(user,'user')
         const deactivate=await uHelpers.isActive(email)
-        return res.status(200).json({message:'deactivated',deactivate})
+        return res.status(200).json({message:'deactivated',onConfirm})
+    },
+    availableGroups:async(req,res)=>{
+        const data= await Group.findAll({})
+        console.log('look', data);
+        return res.status(200).json({message:'available groups',data})
+
     }
+    
 }
