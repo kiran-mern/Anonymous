@@ -30,12 +30,14 @@ const Login:React.FC <LoginProps> = ({head}) => {
     const navigate= useNavigate();
 const [email,setEmail]=useState('')
 const [password,setPassword]=useState('') 
+const [userId,setUserId]=useState('')
 const handleLogin= async(e:React.FormEvent)=>{
   e.preventDefault();
       try {
         const response: AxiosResponse<LoginResponse> = await axios.post(`http://localhost:3000/${head==='admin'? 'admin' : 'user'}/login`, {
           email,
           password,
+          userId
         });
         handleLoginResponse(response);
       } catch (error) {

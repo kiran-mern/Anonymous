@@ -14,7 +14,7 @@ const CreatePost: React.FC = () => {
     const navigate = useNavigate()
     const closeModal = () => {
         setShowModal(false);
-        navigate('/home');
+        // navigate('/home');
     };
 
     const submitPost = async (e) => {

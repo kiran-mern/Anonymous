@@ -23,9 +23,9 @@ module.exports = {
             console.log('error when updating the status', err);
         }
     },
-    gCreation: async (data,img)=>{
+    gCreation: async (data,img,id)=>{
         const create= await Group.create({
-            groupName:data ,image: img
+            groupName:data ,image: img,user_id:id
         })
         console.log('created');
         return create
@@ -46,6 +46,12 @@ module.exports = {
 
         }
        
+    },
+    findGroup:async(gId,uId)=>{
+        const find= await Group.findOne({where:{group_id:gId,user_id:uId}});
+        // console.log(find,'ssssssss');
+        return find;
+
     }
     
 

@@ -1,5 +1,6 @@
 const {DataTypes, DATE}= require('sequelize')
 const {sequelize} = require('../config/database')
+const User= require('../models/Users')
 
 const Group=sequelize.define("Group",{
     group_id:{
@@ -19,11 +20,22 @@ const Group=sequelize.define("Group",{
         type:DataTypes.DATE,
         defaultValue: DataTypes.NOW(),
         allowNull:false
+    },
+    user_id:{
+        type:DataTypes.INTEGER,
+        // allowNull:false,
+        references:{
+            model:'Users',
+            key: 'user_id'
+
+            
+        }
     }
 });
 
 (async () => {
     try {
+        await User.sync({ alter: true }); 
       await Group.sync({ alter: true });
       console.log('Group table updated!');
     } catch (error) {

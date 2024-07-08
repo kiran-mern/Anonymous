@@ -3,7 +3,7 @@ const verification = require('../config/otp')
 const UnverifiedUser = require('../models/Unverified')
 const { token } = require('../utils/jwt')
 const bcrypt = require('bcrypt')
-const uHelpers=require('../helpers/userHelper')
+const uHelpers = require('../helpers/userHelper')
 const jwt = require('jsonwebtoken')
 const UserPost = require('../models/UserPost')
 const Group = require('../models/Group')
@@ -22,7 +22,7 @@ module.exports = {
             password: hashedPassword,
             isActive: false
         };
-        console.log(userData, 'aa');
+        // console.log(userData, 'aa');
 
         try {
             const existUser = await User.findOne({ where: { email: userData.email } });
@@ -30,7 +30,7 @@ module.exports = {
             if (existUser) {
                 return res.status(400).json({ error: 'User already exists' });
             }
-            console.log('111');
+            // console.log('111');
 
             const existUnverifiedUser = await UnverifiedUser.findOne({ where: { email: userData.email } });
             console.log(existUnverifiedUser, 'kk');
@@ -40,7 +40,7 @@ module.exports = {
 
             // Generate verification token
             const token = verification.generateVerificationToken(userData.email);
-            console.log(token, 'tokekn');
+            // console.log(token, 'tokekn');
 
             // Save unverified user datall
             await UnverifiedUser.create({
@@ -65,7 +65,7 @@ module.exports = {
         }
         try {
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
-            console.log(decoded, 'okk');
+            // console.log(decoded, 'okk');
             const email = decoded.email
             const unverifiedUser = await UnverifiedUser.findOne({ where: { email, token } });
             if (!unverifiedUser) {
@@ -79,7 +79,7 @@ module.exports = {
                 password: unverifiedUser.password,
                 isActive: true
             };
-            console.log(userData);
+            // console.log(userData);
 
             await User.create(userData);
             console.log('4545');
@@ -93,14 +93,17 @@ module.exports = {
     loginUser: async (req, res) => {
         try {
             const { email, password } = req.body
+            // console.log(req.body,'body');
             const user = await User.findOne({ where: { email } })
-            // console.log(user);
+            // console.log(user,'user');
+            // const user_id=user.user_id;
+            // console.log(user_id,'uer');
             if (!user) {
                 return res.status(400).json({ message: 'User not found' })
             }
             const match = await bcrypt.compare(password, user.password)
             if (match) {
-                const Token = token(email, user.role)
+                const Token = token(email, user.role,user_id)
                 console.log(Token);
                 return res.status(200).json({ message: 'user loggedIn', role: 'user', token: Token })
             } else {
@@ -115,14 +118,14 @@ module.exports = {
     userPost: async (req, res) => {
         try {
             const { token, content } = req.body
-            console.log(req.body);
+            // console.log(req.body);
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
-            console.log(decoded, 'okk');
+            // console.log(decoded, 'okk');
             const email = decoded.email
             const user = await User.findOne({ where: { email } })
-            console.log(user, 'user');
+            // console.log(user, 'user');
             const user_id = user.user_id
-            console.log(user_id);
+            // console.log(user_id);
             if (!user_id || !content) {
                 return res.status(400).json({ message: 'field is missing' })
             }
@@ -140,38 +143,53 @@ module.exports = {
     userStatus: async (req, res) => {
         try {
             const { email } = req.user
-            const{feeling}=req.body
-            console.log(feeling,'aacc');
+            const { feeling } = req.body
+            // console.log(feeling, 'aacc');
             // const user = await User.findOne({ where: { email } })
             // console.log(user.status);
-            const ab=await uHelpers.setStatus(email,feeling)
-            console.log(ab,'aa');
-        } catch (err){
+            const ab = await uHelpers.setStatus(email, feeling)
+            // console.log(ab, 'aa');
+        } catch (err) {
             console.log(err);
         }
     },
-    groupCreation:async(req,res)=>{
-        const {name,image}= req.body;
-        console.log(req.body);
-        const creation= await uHelpers.gCreation(name,image) 
+    groupCreation: async (req, res) => {
+        const { name, image } = req.body;
+        const user_id =req.user.user_id
+        // console.log(user_id);
+        // console.log(req.user.user_id);
+        // console.log(req.user,'aaaaaaa');
+
+        const creation = await uHelpers.gCreation(name, image,user_id)
         console.log(creation);
 
 
     },
-    deactivate:async(req,res)=>{
-        const {email}= req.user
-        const{onConfirm}=req.body
+    deactivate: async (req, res) => {
+        const { email } = req.user
+        const { onConfirm } = req.body
 
-        const user=await uHelpers.findUser(email)
-        console.log(user,'user')
-        const deactivate=await uHelpers.isActive(email)
-        return res.status(200).json({message:'deactivated',onConfirm})
+        const user = await uHelpers.findUser(email)
+        console.log(user, 'user')
+        const deactivate = await uHelpers.isActive(email)
+        return res.status(200).json({ message: 'deactivated', onConfirm })
     },
-    availableGroups:async(req,res)=>{
-        const data= await Group.findAll({})
+    availableGroups: async (req, res) => {
+        const data = await Group.findAll({})
         console.log('look', data);
-        return res.status(200).json({message:'available groups',data})
+        return res.status(200).json({ message: 'available groups', data })
+
+    },
+    groupJoin: async (req, res) => {
+        console.log(req.body,'jjjjj');
+        const {groupId} = req.body
+        // console.log(req.body)
+        const userId=req.user.user_id
+        console.log(userId);
+        const existMember= await uHelpers.findGroup(groupId,userId)
+        
+
 
     }
-    
+
 }

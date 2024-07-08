@@ -25,6 +25,8 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
   ];
 
   const token= localStorage.getItem('user')
+  console.log(token,'last');
+  
 
   const handleCreateGroup = async() => {
     try{
