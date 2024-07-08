@@ -52,6 +52,9 @@ module.exports = {
         // console.log(find,'ssssssss');
         return find;
 
+    },
+    addMembers:async(gId,uId)=>{
+
     }
     
 

@@ -187,6 +187,10 @@ module.exports = {
         const userId=req.user.user_id
         console.log(userId);
         const existMember= await uHelpers.findGroup(groupId,userId)
+        if(existMember){
+            return res.status(400).json({message:'already a member in the group'})
+        }
+        const joinGroup=await uHelpers.addMembers(groupId,userId)
         
 
 
