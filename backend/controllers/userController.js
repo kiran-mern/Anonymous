@@ -96,14 +96,14 @@ module.exports = {
             // console.log(req.body,'body');
             const user = await User.findOne({ where: { email } })
             // console.log(user,'user');
-            // const user_id=user.user_id;
+            const user_id=user.user_id;
             // console.log(user_id,'uer');
             if (!user) {
                 return res.status(400).json({ message: 'User not found' })
             }
             const match = await bcrypt.compare(password, user.password)
             if (match) {
-                const Token = token(email, user.role,user_id)
+                const Token = token(email, user.role, user_id)
                 console.log(Token);
                 return res.status(200).json({ message: 'user loggedIn', role: 'user', token: Token })
             } else {
@@ -114,6 +114,13 @@ module.exports = {
             return res.status(404).json({ message: 'unexpected error' })
 
         }
+    },
+    home:async(req,res)=>{
+        const posts = await uHelpers.viewAll()
+        console.log(posts,'post');
+        return res.status(200).json({message:'home page',data:posts})
+    
+
     },
     userPost: async (req, res) => {
         try {
@@ -155,12 +162,12 @@ module.exports = {
     },
     groupCreation: async (req, res) => {
         const { name, image } = req.body;
-        const user_id =req.user.user_id
+        const user_id = req.user.user_id
         // console.log(user_id);
         // console.log(req.user.user_id);
         // console.log(req.user,'aaaaaaa');
 
-        const creation = await uHelpers.gCreation(name, image,user_id)
+        const creation = await uHelpers.gCreation(name, image, user_id)
         console.log(creation);
 
 
@@ -181,17 +188,29 @@ module.exports = {
 
     },
     groupJoin: async (req, res) => {
-        console.log(req.body,'jjjjj');
-        const {groupId} = req.body
-        // console.log(req.body)
-        const userId=req.user.user_id
-        console.log(userId);
-        const existMember= await uHelpers.findGroup(groupId,userId)
-        if(existMember){
-            return res.status(400).json({message:'already a member in the group'})
+        try {
+            // console.log(req.body, 'jjjjj');
+            const { groupId } = req.body
+            // console.log(req.body)
+            const userId = req.user.user_id
+            // console.log(userId);
+
+            //          finishing touch
+
+
+            // const existMember = await uHelpers.findGroup(groupId, userId)
+            // if (existMember) {
+            //     return res.status(400).json({ message: 'already a member in the group' })
+            // }
+            const joinGroup = await uHelpers.addMembers(groupId, userId)
+            console.log(joinGroup,'join');
+            return res.status(200).json({ message: 'User added to the group', joinGroup })
+        } catch (err) {
+            console.log('error while joing group');
+            return res.status(400).json({ message: 'internal server error' })
         }
-        const joinGroup=await uHelpers.addMembers(groupId,userId)
-        
+
+
 
 
     }

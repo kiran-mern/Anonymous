@@ -1,5 +1,7 @@
 const User = require('../models/Users')
-const Group= require('../models/Group')
+const Group= require('../models/Group');
+const GroupMember = require('../models/GroupMembers');
+const UserPost= require('../models/UserPost')
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -54,7 +56,14 @@ module.exports = {
 
     },
     addMembers:async(gId,uId)=>{
+        const create= await GroupMember.create({group_id:gId,user_id:uId})
+        return create;
 
+    },
+    viewAll:async()=>{
+        const view= await UserPost.findAll({})
+        // console.log(view,'view')
+        return view;
     }
     
 

@@ -38,30 +38,7 @@ const AvailableGroups: React.FC<AvailableGroupsProps> = ({ groups, onJoinGroup }
   );
 };
 
-// Example usage
-// const App: React.FC = () => {
-//   const sampleGroups: Group[] = [
-//     { id: '1', name: 'Group_name', imageUrl: '/path/to/image1.jpg' },
-//     { id: '2', name: 'Group_name', imageUrl: '/path/to/image2.jpg' },
-//     // ... add more groups as needed
-//   ];
 
-//   const handleJoinGroup = (groupId: string) => {
-//     console.log(`Joining group with id: ${groupId}`);
-//     // Implement join group logic here
-//   };
-
-//   return (
-//     <div className="flex">
-//       {/*  existing LeftSidebar component  */}
-//       <div className="flex-grow">
-//         <AvailableGroups groups={sampleGroups} onJoinGroup={handleJoinGroup} />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;
 
 const App : React.FC=()=>{
 
@@ -69,6 +46,7 @@ const App : React.FC=()=>{
     useEffect(()=>{
         // const token=localStorage.getItem('user')
         const fetchData=async ()=>{
+            // e.preventDefault()
             try{
                 const response=await axios.get('http://localhost:3000/user/allGroups',{
                     headers:{
@@ -93,7 +71,7 @@ const App : React.FC=()=>{
         fetchData();
        
 
-    },[]) 
+    },[token]) 
     const handleGroup=async (groupId: string)=>{
         try{
             const response=await axios.post('http://localhost:3000/user/joinGroup',{groupId},

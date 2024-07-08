@@ -19,8 +19,6 @@ const Header = () => {
                 </div>
                 <div className="border border-gray-600">
                     <Post />
-                    <Post />
-                    <Post />
                 </div>
             </div>
             <Rightbar />

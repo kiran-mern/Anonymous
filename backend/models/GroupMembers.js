@@ -1,7 +1,7 @@
 const {DataTypes}= require  ('sequelize')
-const {sequalize} = require('../config/database')
+const {sequelize} = require('../config/database')
 
-const GroupMember=sequalize.define("GroupMembers",{
+const GroupMember=sequelize.define("GroupMembers",{
     group_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
