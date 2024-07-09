@@ -241,6 +241,22 @@ module.exports = {
 
 
     },
+    postComments:async(req,res)=>{
+        try{
+            const {post_id,user_id,content}= req.body;
+            console.log(req.body);
+                        // const{post_id,content}=req.body
+    
+                // const user_id=req.user.user_id;
+                const data= await uHelpers.addComment(post_id,user_id,content);
+                return res.status(200).json({message:'comments added',data})
+        }
+        catch(err){
+            console.log('Error on comment section',err);
+            return res.status(400).json({ message: 'error on comment section' })
+        }
+    },
+    // getComments:async(req,res)=>
     
 
 }

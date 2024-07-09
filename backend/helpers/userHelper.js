@@ -3,6 +3,7 @@ const Group= require('../models/Group');
 const GroupMember = require('../models/GroupMembers');
 const UserPost= require('../models/UserPost')
 const LikePosts= require('../models/Likes')
+const Comments= require('../models/Comments')
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -104,6 +105,11 @@ module.exports = {
         const count= await LikePosts.count({where:{post_id:pId}})
         console.log(count,'count');
         return count ;
+    },
+    addComment:async(pId,uId,data)=>{
+        const result= await Comments.create({post_id:pId,user_id:uId,content:data})
+        console.log(result,'cmmnt result');
+        return result;
     }
     
 
