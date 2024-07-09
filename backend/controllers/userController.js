@@ -96,7 +96,7 @@ module.exports = {
             // console.log(req.body,'body');
             const user = await User.findOne({ where: { email } })
             // console.log(user,'user');
-            const user_id=user.user_id;
+            const user_id = user.user_id;
             // console.log(user_id,'uer');
             if (!user) {
                 return res.status(400).json({ message: 'User not found' })
@@ -115,11 +115,11 @@ module.exports = {
 
         }
     },
-    home:async(req,res)=>{
+    home: async (req, res) => {
         const posts = await uHelpers.viewAll()
-        console.log(posts,'post');
-        return res.status(200).json({message:'home page',data:posts})
-    
+        console.log(posts, 'post');
+        return res.status(200).json({ message: 'home page', data: posts })
+
 
     },
     userPost: async (req, res) => {
@@ -203,16 +203,44 @@ module.exports = {
             //     return res.status(400).json({ message: 'already a member in the group' })
             // }
             const joinGroup = await uHelpers.addMembers(groupId, userId)
-            console.log(joinGroup,'join');
+            console.log(joinGroup, 'join');
             return res.status(200).json({ message: 'User added to the group', joinGroup })
         } catch (err) {
             console.log('error while joing group');
             return res.status(400).json({ message: 'internal server error' })
         }
+    },
+    likePosts: async (req, res) => {
+        try {
+            // const{post_id}=req.body
+            const { post_id, user_id } = req.body
+
+            console.log(req.body);
+            // const user_id=req.user.user_id;
+            let data,message ;
+            const existingLikes = await uHelpers.findLike(post_id, user_id)
+            console.log(existingLikes);
+            if (existingLikes) {
+                 data = await uHelpers.dLike(post_id, user_id);
+                 message='Post unliked successfully'
+            } else {
+
+                 data = await uHelpers.like(post_id, user_id);
+                 message='Liked the post'
+            };
+            const likeCount = await uHelpers.countLikes(post_id)
+            return res.status(200).json({ message,data,likeCount })
 
 
 
+        } catch (err) {
+            console.log('Error on like posts', err);
+            return res.status(400).json({ message: 'error on like posts' })
 
-    }
+        }
+
+
+    },
+    
 
 }

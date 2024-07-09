@@ -5,22 +5,23 @@ const UserPost = sequelize.define("UserPost", {
     post_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        unique: true,
         autoIncrement: true,
 
     },
     user_id:{
        type: DataTypes.INTEGER,
-       allowNull:false
+       allowNull:false,
+       references:{
+        model: 'Users',
+        key: 'user_id'
+       }
+      
     },
     content: {
       type: DataTypes.TEXT,
       allowNull: false
    }
-    // email: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false
-
-    // },
    
   
    

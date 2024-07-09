@@ -2,6 +2,7 @@ const User = require('../models/Users')
 const Group= require('../models/Group');
 const GroupMember = require('../models/GroupMembers');
 const UserPost= require('../models/UserPost')
+const LikePosts= require('../models/Likes')
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -64,6 +65,45 @@ module.exports = {
         const view= await UserPost.findAll({})
         // console.log(view,'view')
         return view;
+    },
+    findLike:async(pId,uId)=>{
+        const find= await LikePosts.findOne({where:{post_id:pId,user_id:uId}})
+        console.log('find',find);
+        return find;
+
+    },
+    dLike:async(pId,uId)=>{
+        const remove= await LikePosts.destroy({ where: { post_id:pId, user_id :uId} })
+        console.log('dLike',this.dLike);
+        return remove;
+
+    },
+    like:async(pId,uId)=>{
+        const like= await LikePosts.create({where:{post_id:pId,user_id:uId}})
+        console.log(like,"like");
+        return like;
+    },
+    findLike:async(pId,uId)=>{
+        const find= await LikePosts.findOne({where:{post_id:pId,user_id:uId}})
+        console.log('find',find);
+        return find;
+
+    },
+    dLike:async(pId,uId)=>{
+        const remove= await LikePosts.destroy({ where: { post_id:pId, user_id :uId} })
+        console.log('dLike',remove);
+        return remove;
+
+    },
+    like:async(pId,uId)=>{
+        const like= await LikePosts.create({post_id:pId,user_id:uId})
+        console.log(like,"like");
+        return like;
+    },
+    countLikes:async(pId)=>{
+        const count= await LikePosts.count({where:{post_id:pId}})
+        console.log(count,'count');
+        return count ;
     }
     
 

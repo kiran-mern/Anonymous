@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const isAuth= require('../middlewares/isAuth')
 
-const{signup, verifyEmail,loginUser,userPost,home, userStatus,groupJoin,groupCreation,deactivate,availableGroups}=require('../controllers/userController')
+const{signup, verifyEmail,loginUser,userPost,home,likePosts, userStatus,groupJoin,groupCreation,deactivate,availableGroups}=require('../controllers/userController')
 
 router.post('/signup',signup)
 router.post('/verify',verifyEmail)
@@ -15,5 +15,6 @@ router.post('/createGroup',isAuth,groupCreation)
 router.post('/deactivate',isAuth,deactivate)
 router.get('/allGroups',isAuth,availableGroups)
 router.post('/joinGroup',isAuth,groupJoin)
+router.post('/likes',likePosts)
 
 module.exports = router;
