@@ -34,7 +34,7 @@ const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
     }
   return (
     // <div>LikePost</div>
-    <button onClick={handleLike}>{useLike} Likes</button>
+    <button onClick={handleLike}>{useLike|| 0} Likes</button>
   )
 }
 

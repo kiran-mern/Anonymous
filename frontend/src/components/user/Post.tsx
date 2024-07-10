@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import Like from './LikePost'
+import NoStyleComment from './NoStyleComment';
 type Post={
   post_id: number,
   user_id:string,
@@ -58,11 +59,16 @@ const Post = () => {
        <p className="mb-2">
         {post.content}
        </p>
+
        <div className="flex">
          {/* <span className="mr-4">{like[post.id] || 0} likes</span> */}
-         <Like post_id={post.post_id} likes={post.likes} onUpdateLike={likeUpdate} />
+         <span className='mr-4'> <Like post_id={post.post_id} likes={post.likes} onUpdateLike={likeUpdate} /></span>
+        
          <span>{post.comments} comments</span>
        </div>
+       {/* <input type='text' className=" w-full h-auto border-none bg-transparent outline-none placeholder-gray-500 resize-none overflow-hidden"
+      placeholder="Add a comment..."/> */}
+      <NoStyleComment/>
      </div>
 
     ))}
