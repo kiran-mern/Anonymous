@@ -97,9 +97,12 @@ module.exports = {
 
     },
     like:async(pId,uId)=>{
-        const like= await LikePosts.create({post_id:pId,user_id:uId})
-        console.log(like,"like");
-        return like;
+        await LikePosts.create({post_id:pId,user_id:uId})
+        const post= await UserPost.findOne({where:{post_id:pId}})
+        post.likeCount+= 1
+
+        console.log(post.likeCount,"like");
+        return post.likeCount;
     },
     countLikes:async(pId)=>{
         const count= await LikePosts.count({where:{post_id:pId}})
@@ -109,6 +112,11 @@ module.exports = {
     addComment:async(pId,uId,data)=>{
         const result= await Comments.create({post_id:pId,user_id:uId,content:data})
         console.log(result,'cmmnt result');
+        return result;
+    },
+    getComments:async(data)=>{
+        const result= await Comments.findAll({where:{post_id:data}})
+        console.log(result,'reasss');
         return result;
     }
     

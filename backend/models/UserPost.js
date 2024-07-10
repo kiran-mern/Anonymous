@@ -21,7 +21,13 @@ const UserPost = sequelize.define("UserPost", {
     content: {
       type: DataTypes.TEXT,
       allowNull: false
-   }
+   },
+   countLike:{
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+
+}
+
    
   
    

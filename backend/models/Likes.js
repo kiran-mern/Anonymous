@@ -13,7 +13,7 @@ const Like= sequelize.define("Like",{
     post_id:{
         type:DataTypes.INTEGER,
         allowNull:false,
-        unique:true,
+        // unique:true,
         references:{
             model:'UserPosts',
             key:'post_id'
@@ -26,8 +26,8 @@ const Like= sequelize.define("Like",{
             model:'Users',
             key:'user_id'
         }
-    }
-
+    },
+   
 });
 
 (async()=>{

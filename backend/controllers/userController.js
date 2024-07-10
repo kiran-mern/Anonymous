@@ -212,24 +212,25 @@ module.exports = {
     },
     likePosts: async (req, res) => {
         try {
-            // const{post_id}=req.body
-            const { post_id, user_id } = req.body
+            const{post_id}=req.body
+            // const { post_id, user_id } = req.body
 
             console.log(req.body);
-            // const user_id=req.user.user_id;
-            let data,message ;
+            const user_id=req.user.user_id;
+            let data, message;
             const existingLikes = await uHelpers.findLike(post_id, user_id)
             console.log(existingLikes);
             if (existingLikes) {
-                 data = await uHelpers.dLike(post_id, user_id);
-                 message='Post unliked successfully'
+                data = await uHelpers.dLike(post_id, user_id);
+                message = 'Post unliked successfully'
             } else {
 
-                 data = await uHelpers.like(post_id, user_id);
-                 message='Liked the post'
+                data = await uHelpers.like(post_id, user_id);
+                message = 'Liked the post'
             };
             const likeCount = await uHelpers.countLikes(post_id)
-            return res.status(200).json({ message,data,likeCount })
+            console.log(likeCount,'popo');
+            return res.status(200).json({ message, data, likeCount })
 
 
 
@@ -241,22 +242,32 @@ module.exports = {
 
 
     },
-    postComments:async(req,res)=>{
-        try{
-            const {post_id,user_id,content}= req.body;
+    postComments: async (req, res) => {
+        try {
+            const { post_id, user_id, content } = req.body;
             console.log(req.body);
-                        // const{post_id,content}=req.body
-    
-                // const user_id=req.user.user_id;
-                const data= await uHelpers.addComment(post_id,user_id,content);
-                return res.status(200).json({message:'comments added',data})
+            // const{post_id,content}=req.body
+
+            // const user_id=req.user.user_id;
+            const data = await uHelpers.addComment(post_id, user_id, content);
+            return res.status(200).json({ message: 'comments added', data })
         }
-        catch(err){
-            console.log('Error on comment section',err);
+        catch (err) {
+            console.log('Error on comment section', err);
             return res.status(400).json({ message: 'error on comment section' })
         }
     },
-    // getComments:async(req,res)=>
-    
+    getComments: async (req, res) => {
+        try {
+            const { post_id } = req.body
+            const data = await uHelpers.getComments(post_id)
+            return res.status(200).json({ message: 'view comments', data })
+        }
+        catch (err) {
+            console.log(err, 'error while view comments');
+            return res.status(400).json({ message: 'failed request to view comment', err })
+        }
+    }
+
 
 }
