@@ -259,7 +259,8 @@ module.exports = {
     },
     getComments: async (req, res) => {
         try {
-            const { post_id } = req.body
+            const post_id = req.query
+            console.log(post_id)
             const data = await uHelpers.getComments(post_id)
             return res.status(200).json({ message: 'view comments', data })
         }

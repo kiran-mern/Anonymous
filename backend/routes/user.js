@@ -17,6 +17,6 @@ router.get('/allGroups',isAuth,availableGroups)
 router.post('/joinGroup',isAuth,groupJoin)
 router.post('/likes',isAuth,likePosts)
 router.post('/comments',postComments)
-router.get('/comments',getComments)
+router.get('/allComments',getComments)
 
 module.exports = router;
