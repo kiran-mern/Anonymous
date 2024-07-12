@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import Like from './LikePost'
-import Comment from './Comment'
+import {Comment,CommentModal} from './Comment'
 import NoStyleComment from './NoStyleComment';
 type Post={
   post_id: number,
@@ -11,6 +11,10 @@ type Post={
   comments:number
 }
 const Post = () => {
+
+  const[posts,setPosts]=useState<Post[]>([]);
+  const [modalOpen,setModalOpen]=useState(false)
+  const [selectedPostId,setSelectedPostId]=useState<number| null>(null);
   const token= localStorage.getItem('user')
 
 
@@ -21,9 +25,7 @@ const Post = () => {
 
   }
   
-  const[posts,setPosts]=useState<Post[]>([]);
-  const [modalOpen,setModalOpen]=useState(false)
-  const [selectedPostId,setSelectedPostId]=useState<number| null>(null);
+ 
 
   const openModal = (postId: number) => {
     setSelectedPostId(postId);
@@ -78,7 +80,7 @@ const Post = () => {
          <span className='mr-4'> <Like post_id={post.post_id} likes={post.likes} onUpdateLike={likeUpdate} /></span>
         
          {/* <span>{post.comments} comments</span> */}
-         <span><Comment  post_id={post.post_id} openModal={openModal}/></span>
+         <span> <Comment  post_id={post.post_id}  openModal={() => openModal(post.post_id)}/></span>
 
        </div>
        {/* <input type='text' className=" w-full h-auto border-none bg-transparent outline-none placeholder-gray-500 resize-none overflow-hidden"
@@ -88,10 +90,13 @@ const Post = () => {
 
     ))}
      {selectedPostId && (
-        <Comment
+        <CommentModal
           post_id={selectedPostId}
           isOpen={modalOpen}
           onClose={closeModal}
+          postContent={posts.find(p => p.post_id === selectedPostId)?.content || ''}
+          likes={posts.find(p => p.post_id === selectedPostId)?.likes || 0}
+          commentsCount={posts.find(p => p.post_id === selectedPostId)?.comments || 0}
         />
       )}
 
