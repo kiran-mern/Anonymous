@@ -115,7 +115,9 @@ module.exports = {
         return result;
     },
     getComments:async(data)=>{
-        const result= await Comments.findAll({where:{post_id:data}})
+        const result= await Comments.findAll({where:{post_id:data},
+        order:[['createdAt','DESC']]
+    })
         console.log(result,'reasss');
         return result;
     }
