@@ -6,6 +6,7 @@ import Home from '../pages/User/Home'
 import AvailableGroup from '../pages/User/AvailableGroup'
 import Modal from '../components/user/CreatePost'
 import Deactivate from '../components/user/DeactivateModal'
+import Message from '../pages/User/Message'
 const userRouter = () => {
     return (
         <>
@@ -16,6 +17,7 @@ const userRouter = () => {
                 <Route path='/home' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/allGroup' element={<AvailableGroup/>}/>
+                <Route path='/message' element={<Message/>}/>
 
 
 

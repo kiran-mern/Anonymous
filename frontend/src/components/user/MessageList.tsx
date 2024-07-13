@@ -11,7 +11,7 @@ const MessageList = () => {
     const [messages,setMessages]=useState<Message[]>([])
   return (
     <>
-     <div className="w-1/4 flex flex-col bg-gray-800 border-r border-gray-700">
+     <div className="w-1/4 h-screen flex flex-col bg-gray-800 border-r border-gray-700">
         <h2 className="text-xl font-bold p-4">Messages</h2>
         <div className="flex space-x-2 px-4 mb-4">
           <span className="bg-gray-700 rounded-full px-3 py-1 text-sm">connected</span>
