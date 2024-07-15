@@ -7,6 +7,7 @@ const uHelpers = require('../helpers/userHelper')
 const jwt = require('jsonwebtoken')
 const UserPost = require('../models/UserPost')
 const Group = require('../models/Group')
+const { all } = require('../routes')
 module.exports = {
     signup: async (req, res) => {
         console.log(req.body)
@@ -283,6 +284,17 @@ module.exports = {
         }
 
     },
+    getChat:async(req,res)=>{
+        const senderId=req.user.user_id
+        try{
+            const chat= await uHelpers.allMessage(senderId)
+            return res.status(200).json({message:'messages',chat})
+        }
+        catch(err){
+            console.log('error on showing messages',err);
+
+        }
+    }
     
 
 

@@ -130,6 +130,14 @@ module.exports = {
         })
         console.log(result,'msg stored success in uH');
         return result;
+    },
+    allMessage: async(id)=>{
+        const data= await Message.findAll({
+            attributes:['sender_id','receiver_id','content','timestamps'],
+            where:{sender_id:id}
+        })
+        console.log(data,'all stored messages ');
+        return data;
     }
     
 
