@@ -269,7 +269,21 @@ module.exports = {
             console.log(err, 'error while view comments');
             return res.status(400).json({ message: 'failed request to view comment', err })
         }
-    }
+    },
+    postChat:async(req,res)=>{
+        const {sender_id,receiver_id,content}= req.body
+        try{
+            const chat= await uHelpers.createRoom(sender_id, receiver_id,content)
+            return res.status(200).json({message:'message stored in db',chat})
+               
+        }
+        catch(err){
+            console.log('error on storing msg in db',err);
+
+        }
+
+    },
+    
 
 
 }

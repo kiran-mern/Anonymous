@@ -3,7 +3,7 @@ const { sequelize } = require('../config/database')
 
 const Messages = sequelize.define('Messages', {
     id: {
-        id: DataTypes.INTEGER,
+        type:DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -12,11 +12,21 @@ const Messages = sequelize.define('Messages', {
     sender_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references:{
+            model:'Users',
+            key:'user_id'
+        },
+        onDelete:'CASCADE'
 
     },
     receiver_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references:{
+            model:'Users',
+            key:'user_id'
+        },
+        onDelete:'CASCADE'
     },
     content:{
         type:DataTypes.STRING,

@@ -4,6 +4,7 @@ const GroupMember = require('../models/GroupMembers');
 const UserPost= require('../models/UserPost')
 const LikePosts= require('../models/Likes')
 const Comments= require('../models/Comments')
+const Message= require('../models/Messages')
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -119,6 +120,15 @@ module.exports = {
         order:[['createdAt','DESC']]
     })
         console.log(result,'reasss');
+        return result;
+    },
+    createRoom:async(sId,rId,data)=>{
+        const result= await Message.create({
+            sender_id:sId,
+            receiver_id:rId,
+            content: data
+        })
+        console.log(result,'msg stored success in uH');
         return result;
     }
     

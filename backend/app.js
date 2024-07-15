@@ -14,9 +14,9 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(routerMiddleware())
-app.listen(3000, () => {
-    console.log('server is running');
-})
+// app.listen(3000, () => {
+//     console.log('server is running');
+// })
 
 
 const io = new Server(server, {
@@ -73,6 +73,10 @@ io.on('connection', (socket) => {
     });
     
 })
+server.listen(3000, () => {
+    console.log('server is running');
+})
+
 
 
 module.exports = app;
