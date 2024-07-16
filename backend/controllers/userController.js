@@ -306,9 +306,7 @@ module.exports = {
         }
         catch(err){
             console.log(err,'error while finding new connections');
-
         }
-        
     }
 
     
