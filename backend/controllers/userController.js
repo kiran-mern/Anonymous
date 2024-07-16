@@ -294,7 +294,23 @@ module.exports = {
             console.log('error on showing messages',err);
 
         }
+    },
+    findConnections:async(req,res)=>{
+        try{
+        const email= req.user.email
+        const user= await uHelpers.findUser(email)
+        const status=user.status
+        console.log(status,'aap');
+        const findConnect= await uHelpers.userFind(status,email)
+        return res.status(200).json({message:'all users for connection',findConnect})
+        }
+        catch(err){
+            console.log(err,'error while finding new connections');
+
+        }
+        
     }
+
     
 
 

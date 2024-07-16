@@ -100,8 +100,8 @@ const ChatArea = () => {
                 {msg.content}
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                                {new Date(msg.timestamp).toLocaleTimeString()}
-                            </div>
+                     {new Date(msg.timestamp).toLocaleTimeString()}
+              </div>
             </div>
           ))}
         </div>

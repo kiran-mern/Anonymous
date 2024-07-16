@@ -1,10 +1,12 @@
 const User = require('../models/Users')
+const {Op}= require('sequelize')
 const Group= require('../models/Group');
 const GroupMember = require('../models/GroupMembers');
 const UserPost= require('../models/UserPost')
 const LikePosts= require('../models/Likes')
 const Comments= require('../models/Comments')
-const Message= require('../models/Messages')
+const Message= require('../models/Messages');
+const { sequelize } = require('../config/database');
 module.exports = {
 
     setStatus: async (data,newStatus) => {
@@ -138,6 +140,18 @@ module.exports = {
         })
         console.log(data,'all stored messages ');
         return data;
+    },
+    userFind:async(data,mail)=>{
+        const result= await User.findAll({
+            where:{
+                status:data,
+                email: {
+                    [Op.ne]:mail
+                }
+
+            }});
+        console.log(result,'allUser');
+        return result;
     }
     
 
