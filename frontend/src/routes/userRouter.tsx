@@ -18,6 +18,7 @@ const userRouter = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/allGroup' element={<AvailableGroup/>}/>
                 <Route path='/message' element={<Message/>}/>
+                
 
 
 

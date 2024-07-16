@@ -23,12 +23,6 @@ const Cards:React.FC<ReusableProps> = ({items,onAction,renderButton}) => {
               <img src={item.imageUrl} alt={item.name} className="w-14 h-14 rounded-full object-cover" />
             </div>
             <h3 className="text-white text-lg mb-2">{item.name}</h3>
-            {/* <button
-              onClick={() => onJoinGroup(group.id)}
-              className="bg-teal-500 text-white px-4 py-1 rounded-full hover:bg-teal-600 transition-colors"
-            >
-              Join
-            </button> */}
             {renderButton(item.id)}
           </div>
         ))}
