@@ -47,4 +47,5 @@ const Messages = sequelize.define('Messages', {
         console.log('error on updating message table');
 
     }
-})
+})();
+module.exports=Messages;

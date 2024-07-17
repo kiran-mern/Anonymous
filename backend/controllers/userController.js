@@ -307,6 +307,29 @@ module.exports = {
         catch(err){
             console.log(err,'error while finding new connections');
         }
+    },
+    connectRequest:async(req,res)=>{
+        const senderId= req.user.user_id
+       const {receiverId}=req.body
+       try{
+        const receiver= await uHelpers.findId(receiverId)
+        if(!receiver){
+            return res.status(404).json({message:'Receiver not found'})
+        }
+        const existingRequest= await uHelpers.findRequest(senderId,receiverId)
+        if(existingRequest){
+            return res.status(400).json({message:'Connction request already exist'})
+        }
+        const connectRequest= await uHelpers.makeConnection(senderId,receiverId)
+        return res.status(200).json({message:'connection request sent',connectRequest})
+       }
+       catch(err){
+        console.err('Error sending connection request:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+       }
+
+
+
     }
 
     

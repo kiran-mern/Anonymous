@@ -7,6 +7,7 @@ import AvailableGroup from '../pages/User/AvailableGroup'
 import Modal from '../components/user/CreatePost'
 import Deactivate from '../components/user/DeactivateModal'
 import Message from '../pages/User/Message'
+import FindConnection from '../pages/User/FindConnection'
 const userRouter = () => {
     return (
         <>
@@ -18,6 +19,7 @@ const userRouter = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/allGroup' element={<AvailableGroup/>}/>
                 <Route path='/message' element={<Message/>}/>
+                <Route path='/find' element={<FindConnection/>} />
                 
 
 
