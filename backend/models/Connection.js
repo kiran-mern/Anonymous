@@ -42,4 +42,4 @@ const Connection= sequelize.define('Connection',{
     }
 
 })();
-// module.exports= Connection;
+module.exports= Connection;

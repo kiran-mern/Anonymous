@@ -14,9 +14,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(routerMiddleware())
-// app.listen(3000, () => {
-//     console.log('server is running');
-// })
+
 
 
 const io = new Server(server, {

@@ -308,11 +308,13 @@ module.exports = {
             console.log(err,'error while finding new connections');
         }
     },
-    connectRequest:async(req,res)=>{
+    sendRequest:async(req,res)=>{
         const senderId= req.user.user_id
        const {receiverId}=req.body
+       console.log(receiverId,'asdssd');
        try{
         const receiver= await uHelpers.findId(receiverId)
+
         if(!receiver){
             return res.status(404).json({message:'Receiver not found'})
         }
@@ -324,12 +326,26 @@ module.exports = {
         return res.status(200).json({message:'connection request sent',connectRequest})
        }
        catch(err){
-        console.err('Error sending connection request:', err);
+        console.log('Error sending connection request:', err);
         return res.status(500).json({ message: 'Internal server error' });
        }
-
-
-
+    },
+    acceptRequest:async(req,res)=>{
+        const receiverId=req.user.user_id;
+        const {requestId}= req.body;
+        try{
+            const connectionRequest= await uHelpers.existConnection(requestId,receiverId)
+            if (!connectionRequest) {
+                return res.status(404).json({ message: 'Connection request not found' });
+            }
+            const updated= await uHelpers.accept(requestId,receiverId)
+            console.log(updated,'updated status');
+            return res.status(200).json({message:'connction accepted'})
+        }
+        catch(err){
+            console.log(err,'error on accept request');
+            return res.status(500).json({message:'Internal server error'})
+        }
     }
 
     

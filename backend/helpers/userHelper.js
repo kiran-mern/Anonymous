@@ -6,7 +6,7 @@ const UserPost = require('../models/UserPost')
 const LikePosts = require('../models/Likes')
 const Comments = require('../models/Comments')
 const Message = require('../models/Messages');
-const Connection= require('../models/Connection')
+const Connection = require('../models/Connection')
 const { sequelize } = require('../config/database');
 module.exports = {
 
@@ -157,7 +157,7 @@ module.exports = {
         return result;
     },
     findId: async (data) => {
-        const result = await User.find({ where: { user_id: data } })
+        const result = await User.findOne({ where: { user_id: data } })
         console.log(result, 'result by receiver id ');
         return result
     },
@@ -172,18 +172,41 @@ module.exports = {
                 }
             })
 
-         return request;
+            return request;
 
-        }catch(err){
-            console.log(err,'error on finding existing request');
+        } catch (err) {
+            console.log(err, 'error on finding existing request');
         }
     },
-    makeConnection:async(sId,rId)=>{
-        const connection=await Connection.create({
-            sender_id:sId,receiver_id:rId,status:'pending'})
-            console.log(connection,'makeconnctn');
-            return connection
+    makeConnection: async (sId, rId) => {
+        const connection = await Connection.create({
+            sender_id: sId, receiver_id: rId, status: 'pending'
+        })
+        console.log(connection, 'makeconnctn');
+        return connection
+    },
+    existConnection: async (sId, rId) => {
+        const connect = await Connection.findOne({
+            where: {
+                sender_id: sId, receiver_id: rId, status: 'pending'
+            }
+        })
+        return connect
+    },
+    accept: async (sId, rId) => {
+        try{
+            const update = await Connection.update(
+                { status: 'accepted' },
+                { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
+            )
+            return update
+        }
+        catch(err){
+            console.log(err,'error on updating the status ');
+        
+        }
     }
+
 
 
 

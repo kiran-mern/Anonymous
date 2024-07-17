@@ -1,15 +1,15 @@
 import React from 'react'
 
 type Item={
-    id:string,
+    id:number,
     name:string,
     imageUrl:string
 }
 
 type ReusableProps={
     items: Item[],
-    onAction:(id:string)=> void,
-    renderButton:(id:string)=>JSX.Element
+    onAction:(id:number)=> void,
+    renderButton:(id:number)=>JSX.Element
 }
 
 const Cards:React.FC<ReusableProps> = ({items,onAction,renderButton}) => {

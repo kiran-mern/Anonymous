@@ -23,7 +23,7 @@ const AllConnection = () => {
                 console.log(response, 'response in allconection');
 
                 const data = response.data.findConnect.map((connection: any) => ({
-                    id: connection.id,
+                    id: connection.user_id,
                     name: connection.name
                 }));
                 setConnection(data)
@@ -34,8 +34,8 @@ const AllConnection = () => {
         fetchData()
     }, [token])
 
-    const handleConnect=async(connectionId:string)=>{
-        try{ const response= await axios.post('http://localhost:3000/user/connect',{connectionId},{
+    const handleConnect=async(receiverId:number)=>{
+        try{ const response= await axios.post('http://localhost:3000/user/connect',{receiverId},{
             headers:{
                 authorization:`${token}`
             }

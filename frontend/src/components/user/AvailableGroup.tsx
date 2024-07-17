@@ -3,7 +3,7 @@ import axios from 'axios'
 import Cards from '../common/Cards'
 
 type Group={
-  id:string,
+  id:number,
   name:string,
   imageUrl:string
 }
@@ -36,7 +36,7 @@ const AvailableGroup = () => {
     fetchData()
   },[token])
 
-  const joinGroup=async(groupId:string)=>{
+  const joinGroup=async(groupId:number)=>{
     try{
       const response=await axios.post('http://localhost:3000/user/joinGroup',{groupId},
       {
