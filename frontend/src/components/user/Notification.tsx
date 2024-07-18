@@ -3,6 +3,7 @@ import Notification from '../common/Notification'
 import {NotificationItem} from '../common/Notification'
 import axios from 'axios'
 import Leftbar from './Leftbar'
+import FindAnonymous from './FindAnonymous'
 
 const NotificationList:React.FC = () => {
     const token= localStorage.getItem('user')
@@ -33,6 +34,7 @@ const NotificationList:React.FC = () => {
           {/* Your sidebar component here */}
           <Leftbar/>
           <Notification notification={notification} />
+          <FindAnonymous/>
           {/* Your "Find a new anonymous" component here */}
         </div>
       );

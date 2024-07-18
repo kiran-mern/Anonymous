@@ -38,9 +38,7 @@ const Notification: React.FC<{ item: NotificationItem }> = ({ item }) => {
 
         }
     }
-    // return (
-    //     <div>Notification</div>
-    // )
+    
 }
 
 const Notifications:React.FC <NotificationProps>=({notification})=>{
