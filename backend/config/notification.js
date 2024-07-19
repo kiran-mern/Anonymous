@@ -32,6 +32,8 @@ module.exports={
                 notifications.push({
                     type:'connections',
                     user:connect.Sender.name,
+                
+                    userId:connect.Sender.user_id,
                     message:`a new connection request by user ${connect.Sender.name}`,
                     createdAt: connect.createdAt
 

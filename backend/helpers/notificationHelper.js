@@ -80,7 +80,7 @@ module.exports = {
                 include: [{
                     model: User,
                     as: 'Sender',
-                    attributes: ['name']
+                    attributes: ['name','user_id']
                 }],
 
                 where: { receiver_id: userId },

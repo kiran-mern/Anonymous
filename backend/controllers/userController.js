@@ -333,6 +333,7 @@ module.exports = {
     acceptRequest:async(req,res)=>{
         const receiverId=req.user.user_id;
         const {requestId}= req.body;
+        console.log(req.body,'body');
         try{
             const connectionRequest= await uHelpers.existConnection(requestId,receiverId)
             if (!connectionRequest) {

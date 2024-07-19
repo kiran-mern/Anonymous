@@ -21,6 +21,7 @@ const NotificationList:React.FC = () => {
                 const data = response.data.notification;
                 const mappedNotifications = data.map((item: any, index: number) => ({
                     id: index, // Assuming no id is provided by backend
+                    userId:item.userId,
                     type: item.type,
                     personName: item.type === 'likes' ? item.user : item.type === 'comments' ? item.user : item.type==='connections'? item.user :item.type==='accepted'? item.user: '',
                     content: item.type === 'comments' ? item.content : '',

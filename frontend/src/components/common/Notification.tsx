@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React from 'react'
 
 type NotificationType = 'connections' | 'likes' | 'comments' | 'accept';
 
 export type NotificationItem = {
     id: number,
+    userId:number,
     type: NotificationType,
     personName: string,
     content?: string,
@@ -17,6 +19,19 @@ type NotificationProps = {
 
 
 const Notification: React.FC<{ item: NotificationItem }> = ({ item }) => {
+
+    const token= localStorage.getItem('user')
+    const handleConfirm= async()=>{
+        const response= await axios.post('http://localhost:3000/user/accept',{requestId:item.userId},
+        {headers:{
+            authorization:`${token}`
+        }
+           
+        })
+        console.log(response,'resresrs');
+        
+    }
+
     const renderContent = () => {
         switch (item.type) {
             case 'connections':
@@ -24,7 +39,7 @@ const Notification: React.FC<{ item: NotificationItem }> = ({ item }) => {
                     <>
                         <p>{item.personName} requested to connect</p>
                         <div className="mt-2">
-                            <button className="bg-teal-500 text-white px-3 py-1 rounded mr-2">Confirm</button>
+                            <button onClick={handleConfirm} className="bg-teal-500 text-white px-3 py-1 rounded mr-2">Confirm</button>
                             <button className="bg-gray-500 text-white px-3 py-1 rounded">Delete</button>
                         </div>
                     </>
