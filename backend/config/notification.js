@@ -14,6 +14,7 @@ module.exports={
             likes.forEach(like=>{
                 notifications.push({
                     type:'likes',
+                    user:like.User.name,
                     messages:`Your Posts was liked by user ${like.User.name}`,
                     createdAt:like.createdAt
                 })
@@ -21,6 +22,8 @@ module.exports={
             comments.forEach(comment=>{
                 notifications.push({
                     type:'comments',
+                    user:comment.user,
+                    content:comment.content,
                     message: comment.message,
                     createdAt: comment.createdAt
                 })
@@ -28,6 +31,7 @@ module.exports={
             connections.forEach(connect=>{
                 notifications.push({
                     type:'connections',
+                    user:connect.Sender.name,
                     message:`a new connection request by user ${connect.Sender.name}`,
                     createdAt: connect.createdAt
 

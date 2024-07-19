@@ -1,6 +1,6 @@
 import React from 'react'
 
-type NotificationType = 'request' | 'likes' | 'comments' | 'accept';
+type NotificationType = 'connections' | 'likes' | 'comments' | 'accept';
 
 export type NotificationItem = {
     id: number,
@@ -19,7 +19,7 @@ type NotificationProps = {
 const Notification: React.FC<{ item: NotificationItem }> = ({ item }) => {
     const renderContent = () => {
         switch (item.type) {
-            case 'request':
+            case 'connections':
                 return (
                     <>
                         <p>{item.personName} requested to connect</p>

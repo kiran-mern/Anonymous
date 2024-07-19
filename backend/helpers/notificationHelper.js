@@ -63,7 +63,8 @@ module.exports = {
                 message: `${comment.User.name} commented on your post "${comment.UserPost.content}"`,
                 createdAt: comment.createdAt,
                 postId: comment.UserPost.post_id,
-                user: comment.User // Include the user object for consistency
+                user: comment.User.name ,// Include the user object for consistency
+                content:comment.UserPost.content
             }));
 
             console.log(formattedComments, 'formatted comments');

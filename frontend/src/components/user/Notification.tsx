@@ -18,10 +18,18 @@ const NotificationList:React.FC = () => {
                         authorization:`${token}`
                     }
                 })
-                const data=response .data.notification
-                console.log(data,'aaako');
-                
-                setNotification(data)
+                const data = response.data.notification;
+                const mappedNotifications = data.map((item: any, index: number) => ({
+                    id: index, // Assuming no id is provided by backend
+                    type: item.type,
+                    personName: item.type === 'likes' ? item.user : item.type === 'comments' ? item.user : item.type==='connections'? item.user :item.type==='accepted'? item.user: '',
+                    content: item.type === 'comments' ? item.content : '',
+                    message: item.message,
+                    createdAt: item.createdAt
+                }));
+
+                console.log(mappedNotifications, 'aaako');
+                setNotification(mappedNotifications);
 
             }
             catch(err){
