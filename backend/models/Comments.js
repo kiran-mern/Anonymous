@@ -1,6 +1,10 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../config/database')
 
+const UserPost= require('./UserPost')
+const User=require('./Users')
+
+
 const Comments= sequelize.define('Comments',{
     id:{
         type: DataTypes.INTEGER,
@@ -32,6 +36,11 @@ const Comments= sequelize.define('Comments',{
     }
 
 });
+
+UserPost.hasMany(Comments, { foreignKey: "post_id" });
+Comments.belongsTo(UserPost, { foreignKey: "post_id" });
+User.hasMany(Comments, { foreignKey: "user_id" });
+Comments.belongsTo(User, { foreignKey: "user_id" });
 
 (async()=>{
     try{

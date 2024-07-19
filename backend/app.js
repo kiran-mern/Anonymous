@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const cors = require('cors')
 require('dotenv').config();
+require('./config/association')
 const routerMiddleware = require('./middlewares/routes');
 const { timeStamp, log } = require('console');
 

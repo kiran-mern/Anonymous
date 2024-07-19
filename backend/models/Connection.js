@@ -1,5 +1,6 @@
 const {DataTypes}= require('sequelize')
 const {sequelize}= require('../config/database')
+const Users= require('./Users')
 
 const Connection= sequelize.define('Connection',{
 
@@ -31,6 +32,10 @@ const Connection= sequelize.define('Connection',{
         defaultValue:'pending'
     }
 },{timestamps:true});
+
+// Connection.belongsTo(Users, { as: 'Sender', foreignKey: 'sender_id' });
+
+// Connection.belongsTo(Users, { as: 'Receiver', foreignKey: 'receiver_id' });
 
 (async()=>{
     try{

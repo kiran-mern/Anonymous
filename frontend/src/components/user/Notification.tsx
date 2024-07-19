@@ -12,12 +12,15 @@ const NotificationList:React.FC = () => {
     useEffect(()=>{
         const fetchNotification=async()=>{
             try{
-                const response= await axios.post('',{
+                
+                const response= await axios.get('http://localhost:3000/user/notification',{
                     headers:{
                         authorization:`${token}`
                     }
                 })
-                const data=response .data.data
+                const data=response .data.notification
+                console.log(data,'aaako');
+                
                 setNotification(data)
 
             }
@@ -28,7 +31,7 @@ const NotificationList:React.FC = () => {
             }
         }
         fetchNotification()
-    },[notification])
+    },[])
     return (
         <div className="flex">
           {/* Your sidebar component here */}

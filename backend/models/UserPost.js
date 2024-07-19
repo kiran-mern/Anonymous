@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../config/database')
+const User=require('./Users')
 
 const UserPost = sequelize.define("UserPost", {
     post_id: {
@@ -27,12 +28,10 @@ const UserPost = sequelize.define("UserPost", {
     defaultValue: 0
 
 }
-
-   
-  
-   
-
 });
+
+UserPost.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(UserPost, { foreignKey: "user_id" });
 
 // Sync the model with the database
 (async () => {

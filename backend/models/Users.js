@@ -1,5 +1,8 @@
 const { DataTypes } = require("sequelize");
 const { sequelize }= require("../config/database");
+// const Connection = require("./Connection");
+// const Connection = require('./Connection');
+
 
 sequelize.options.logging = false;
 
@@ -47,6 +50,12 @@ const Users = sequelize.define("Users", {
     }
     
 });
+
+
+// Define associations
+
+// Users.hasMany(Connection, { foreignKey: 'sender_id', as: 'SentConnections' });
+// Users.hasMany(Connection, { foreignKey: 'receiver_id', as: 'ReceivedConnections' });
 
 // Sync the model with the database
 (async () => {

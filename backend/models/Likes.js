@@ -1,7 +1,7 @@
 const { DataTypes } = require ("sequelize");
 const { sequelize } = require ("../config/database");
-// const UserPosts=require('../models/UserPost')
-// const Users= require('../models/Users')
+const UserPost=require('../models/UserPost')
+const User= require('../models/Users')
 
 const Like= sequelize.define("Like",{
     id:{
@@ -29,6 +29,8 @@ const Like= sequelize.define("Like",{
     },
    
 });
+Like.belongsTo(User, { foreignKey: 'user_id' });
+Like.belongsTo(UserPost, { foreignKey: 'post_id' });
 
 (async()=>{
     try{

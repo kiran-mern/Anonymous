@@ -6,7 +6,8 @@ export type NotificationItem = {
     id: number,
     type: NotificationType,
     personName: string,
-    content?: string
+    content?: string,
+    message?: string
 }
 
 type NotificationProps = {
@@ -38,6 +39,12 @@ const Notification: React.FC<{ item: NotificationItem }> = ({ item }) => {
 
         }
     }
+    return (
+        <div className="p-2 border-b border-gray-700">
+            {renderContent()}
+        </div>
+    );
+
     
 }
 

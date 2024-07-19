@@ -1,35 +1,46 @@
+const {fetchRecentLikes,fetchRecentComments,fetchRecentConnection, fetchAcceptedConnection} =require ('../helpers/notificationHelper')
 module.exports={
     getNotification:async(userId)=>{
         try{
-            const[likes,comments,connections]= await Promise.all([
+            const[likes,comments,connections,acceptedConnections]= await Promise.all([
                 fetchRecentLikes(userId),
                 fetchRecentComments(userId),
-                fetchRecentConnections(userId)
+                fetchRecentConnection(userId),
+                fetchAcceptedConnection(userId)
             ])
+
+             
             const notifications=[]
             likes.forEach(like=>{
                 notifications.push({
                     type:'likes',
-                    messages:`Your Posts was liked by user ${like.user_id}`,
+                    messages:`Your Posts was liked by user ${like.User.name}`,
                     createdAt:like.createdAt
                 })
             })
-            comments.foreach(comment=>{
+            comments.forEach(comment=>{
                 notifications.push({
                     type:'comments',
-                    message: `Post was commented on by user ${comment.user_id}`,
+                    message: comment.message,
                     createdAt: comment.createdAt
                 })
             })
-            connections.foreach(connect=>{
+            connections.forEach(connect=>{
                 notifications.push({
-                    type:'connection',
-                    message:`a new connection request by user ${connect.sender_id}`,
+                    type:'connections',
+                    message:`a new connection request by user ${connect.Sender.name}`,
                     createdAt: connect.createdAt
 
                 })
 
             })
+            acceptedConnections.forEach(connection => {
+                notifications.push({
+                    type: 'acceptedConnections',
+                    message: `Your connection request to user ${connection.Receiver.name} was accepted`,
+                    createdAt: connection.updatedAt // Use updatedAt to get the time of acceptance
+                });
+            });
 
               // Sort notifications by time
         notifications.sort((a, b) => b.createdAt - a.createdAt);
