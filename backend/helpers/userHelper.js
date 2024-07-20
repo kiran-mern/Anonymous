@@ -205,6 +205,20 @@ module.exports = {
             console.log(err,'error on updating the status ');
         
         }
+    },
+    unwantedUser:async(sId,rId)=>{
+        try{
+            const update = await Connection.update(
+                { status: 'rejected' },
+                { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
+            )
+            return update
+        }
+        catch(err){
+            console.log(err,'error on updating the status ');
+        
+        }
+
     }
 
 

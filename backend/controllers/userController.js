@@ -333,7 +333,7 @@ module.exports = {
     acceptRequest:async(req,res)=>{
         const receiverId=req.user.user_id;
         const {requestId}= req.body;
-        console.log(req.body,'body');
+        // console.log(req.body,'body');
         try{
             const connectionRequest= await uHelpers.existConnection(requestId,receiverId)
             if (!connectionRequest) {
@@ -345,6 +345,22 @@ module.exports = {
         }
         catch(err){
             console.log(err,'error on accept request');
+            return res.status(500).json({message:'Internal server error'})
+        }
+    },
+    cancelRequest:async(req,res)=>{
+        const receiverId=req.user.user_id;
+        const {requestId}= req.body;
+        try{
+            const connectionRequest=await uHelpers.existConnection(requestId,receiverId)
+            if(!connectionRequest){
+                return res.status(400).json({message:'connction request not found'})
+            }
+            const reject= await uHelpers.unwantedUser(requestId,receiverId)
+            return res.status(200).json({message:'Rejected from the requested list'})
+        }
+        catch(err){
+            console.log(err,'error on cancelling request');
             return res.status(500).json({message:'Internal server error'})
         }
     }
