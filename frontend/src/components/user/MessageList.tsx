@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React ,{useState,useEffect} from'react'
 
 type Message={
@@ -8,14 +9,60 @@ type Message={
 
 const MessageList = () => {
 
-    const [messages,setMessages]=useState<Message[]>([])
+  const token= localStorage.getItem('user')
+  const [connected,setConnected]=useState<Message[]>([])
+  const[requested,setRequested]=useState<Message[]>([])
+  const [activeTab,setActiveTab]=useState<'connected' | 'requested'>('connected')
+  const [isLoading,setIsLoading]=useState(true)
+
+    // const [messages,setMessages]=useState<Message[]>([])
+    const messages= activeTab==='connected'? connected: requested
+
+    useEffect(()=>{
+      const fetchRequestedMessage=async()=>{
+        setIsLoading(true)
+        try{
+          const response= await axios.get('http://localhost:3000/user/requested',{
+          headers:{
+            authorization:`${token}`
+          }
+        });
+        console.log(response);
+        
+        const data=await response.data.requested
+        setRequested(data)
+
+        }
+        catch(err){
+          console.log(err,'not fetching requested');
+          
+
+        }
+        
+
+      }
+      
+      fetchRequestedMessage()
+
+    },[activeTab,token])
+    // console.log();
+    
+
   return (
     <>
      <div className="w-1/4 h-screen flex flex-col bg-gray-800 border-r border-gray-700">
         <h2 className="text-xl font-bold p-4">Messages</h2>
         <div className="flex space-x-2 px-4 mb-4">
-          <span className="bg-gray-700 rounded-full px-3 py-1 text-sm">connected</span>
-          <span className="bg-gray-700 rounded-full px-3 py-1 text-sm">requested</span>
+         
+          <button  className={`rounded-full px-3 py-1 text-sm ${activeTab === 'connected' ? 'bg-blue-600' : 'bg-gray-700'}`}
+           onClick={() => setActiveTab('connected')}>
+           Connected
+          </button >
+          <button  className={`rounded-full px-3 py-1 text-sm ${activeTab === 'requested' ? 'bg-blue-600' : 'bg-gray-700'}`}
+          onClick={()=>setActiveTab('requested')}>
+            Requested
+
+          </button>
         </div>
         <div className="overflow-y-auto">
           {messages.map((message) => (
@@ -29,6 +76,23 @@ const MessageList = () => {
               </div>
             </div>
           ))}
+           {isLoading ? (
+                        <p></p>
+                    ) : messages.length > 0 ? (
+                        messages.map((message) => (
+                            <div key={message.id} className="flex items-center p-4 hover:bg-gray-700">
+                                <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-3">
+                                    ID
+                                </div>
+                                <div>
+                                    <div className="font-semibold">{message.profileName}</div>
+                                    <div className="text-sm text-gray-400">{message.lastMessage}</div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No messages found.</p>
+                    )}
         </div>
       </div>
     

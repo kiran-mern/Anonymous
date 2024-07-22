@@ -363,6 +363,30 @@ module.exports = {
             console.log(err,'error on cancelling request');
             return res.status(500).json({message:'Internal server error'})
         }
+    },
+    connectedMessage:async(req,res)=>{
+        const userId=req.user.user_id;
+        try{
+            const connected= await uHelpers.connectedOne(userId)
+            return res.status(200).json({message:'fetching conncted users',connected})
+        }
+        catch(err){
+            console.log(err,'error fetching connected users ');
+            return res.status(500).json({message:'Internal error'})
+        }
+    },
+    requestedMessage:async(req,res)=>{
+        const userId= req.user.user_id
+        console.log(userId);
+        try{
+            const requested= await uHelpers.requestedOne(userId)
+            console.log(requested,'1');
+            return res.status(200).json({message:'fetching requested users',requested})
+        }
+        catch(err){
+            console.log(err,'error fetching requested users');
+            return res.status(500).json({message:'Internal error'})
+        }
     }
 
     

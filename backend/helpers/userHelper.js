@@ -219,6 +219,40 @@ module.exports = {
         
         }
 
+    },
+    connectedOne:async(id)=>{
+        try{
+            const result= await Connection.findAll({where:{user_id:id,notificationStatus:'connected'}})
+            return result
+
+        }
+        catch(err){
+            console.log(err,'error fetching connected users');
+
+        }
+       
+    },
+    requestedOne:async(id)=>{
+        try{
+            const result= await Connection.findAll({where:{
+                sender_id:id,status:'pending'},
+                include: [{
+                    model: User,
+                    as: 'Receiver',
+                    attributes: ['name', 'user_id']
+                }]
+            })
+            console.log(result);
+            return result.map((connection)=>({
+                id:connection.id,
+                profileName:connection.Receiver.name,
+                userId:connection.Receiver.user_id
+
+            }))
+        }
+        catch(err){
+            console.log(err,'error fetching requsted users')
+        }
     }
 
 
