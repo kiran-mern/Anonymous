@@ -188,7 +188,7 @@ module.exports = {
     existConnection: async (sId, rId) => {
         const connect = await Connection.findOne({
             where: {
-                sender_id: sId, receiver_id: rId, status: 'pending'
+                sender_id: sId, receiver_id: rId, status: 'pending',notificationStatus: 'unread'
             }
         })
         return connect
@@ -196,7 +196,7 @@ module.exports = {
     accept: async (sId, rId) => {
         try{
             const update = await Connection.update(
-                { status: 'accepted' },
+                { status: 'accepted',notificationStatus: 'read' },
                 { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
             )
             return update
@@ -209,7 +209,7 @@ module.exports = {
     unwantedUser:async(sId,rId)=>{
         try{
             const update = await Connection.update(
-                { status: 'rejected' },
+                { status: 'rejected',notificationStatus: 'read' },
                 { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
             )
             return update

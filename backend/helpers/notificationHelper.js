@@ -41,7 +41,7 @@ module.exports = {
                     {
                         model: UserPost,
                         attributes: ['post_id', 'content'], // Include post details
-                        where: { user_id: userId }
+                        where: { user_id: userId}
                     }
                 ],
                 order: [['createdAt', 'DESC']],
@@ -83,7 +83,7 @@ module.exports = {
                     attributes: ['name','user_id']
                 }],
 
-                where: { receiver_id: userId },
+                where: { receiver_id: userId,notificationStatus: 'unread' },
                 order: [['createdAt', 'DESC']],
                 limit: 10
             });

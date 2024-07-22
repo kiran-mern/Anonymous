@@ -30,6 +30,10 @@ const Connection= sequelize.define('Connection',{
         type:DataTypes.STRING,
         allowNull:false,
         defaultValue:'pending'
+    },
+    notificationStatus:{
+        type: DataTypes.ENUM('unread', 'read'),
+        defaultValue: 'unread'
     }
 },{timestamps:true});
 

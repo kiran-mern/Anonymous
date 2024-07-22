@@ -40,12 +40,12 @@ const NotificationList:React.FC = () => {
             }
         }
         fetchNotification()
-    },[])
+    },[token])
     return (
         <div className="flex">
           {/* Your sidebar component here */}
           <Leftbar/>
-          <Notification notification={notification} />
+          <Notification notification={notification} setNotification={setNotification} />
           <FindAnonymous/>
           {/* Your "Find a new anonymous" component here */}
         </div>
