@@ -31,21 +31,34 @@ const MessageList = () => {
         
         const data=await response.data.requested
         setRequested(data)
-
         }
         catch(err){
           console.log(err,'not fetching requested');
-          
-
+        }
+      }
+      const fetchConnectedMessage=async()=>{
+        try{
+          const response= await axios.get('http://localhost:3000/user/connected',{
+          headers:{
+            authorization:`${token}`
+          }
+        });
+        console.log(response);
+        
+        const data=await response.data.connected
+        setConnected(data)
+        }
+        catch(err){
+          console.log(err,'not fetching requested');
         }
         
 
       }
+      fetchConnectedMessage()
       
       fetchRequestedMessage()
 
     },[activeTab,token])
-    // console.log();
     
 
   return (

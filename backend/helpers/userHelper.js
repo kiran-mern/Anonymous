@@ -166,8 +166,12 @@ module.exports = {
             const request = await Connection.findOne({
                 where:
                 {
-                    sender_id: sId,
-                    receiver_id: rId
+                   [ Op.or]:[
+                    { sender_id: sId,receiver_id: rId},
+                    { sender_id: rId,receiver_id: sId}
+                   ]
+                    // sender_id: sId,
+                    // receiver_id: rId
 
                 }
             })
@@ -222,16 +226,39 @@ module.exports = {
     },
     connectedOne:async(id)=>{
         try{
-            const result= await Connection.findAll({where:{user_id:id,notificationStatus:'connected'}})
-            return result
+            const result= await Connection.findAll({
+                where:{
+                    status:'accepted',
+                    [Op.or]:[
+                        {sender_id:id},
+                        {receiver_id:id}
+                    ]
+
+            },
+            include:[{
+                model:User,
+                as:'Sender',
+                attributes:['name','user_id'], 
+            },{
+                model:User,
+                as:'Receiver',
+                attributes: ['name', 'user_id'],
+            }]
+        })
+            return result.map((connection)=>({
+                id:connection.id,
+                profileName: connection.sender_id === id ? connection.Receiver.name : connection.Sender.name,
+                userId: connection.sender_id === id ? connection.Receiver.user_id : connection.Sender.user_id,
+
+            }))
 
         }
         catch(err){
             console.log(err,'error fetching connected users');
 
-        }
-       
+        }  
     },
+  
     requestedOne:async(id)=>{
         try{
             const result= await Connection.findAll({where:{
@@ -242,7 +269,6 @@ module.exports = {
                     attributes: ['name', 'user_id']
                 }]
             })
-            console.log(result);
             return result.map((connection)=>({
                 id:connection.id,
                 profileName:connection.Receiver.name,

@@ -377,10 +377,8 @@ module.exports = {
     },
     requestedMessage:async(req,res)=>{
         const userId= req.user.user_id
-        console.log(userId);
         try{
             const requested= await uHelpers.requestedOne(userId)
-            console.log(requested,'1');
             return res.status(200).json({message:'fetching requested users',requested})
         }
         catch(err){
