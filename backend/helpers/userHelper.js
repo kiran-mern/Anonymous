@@ -143,14 +143,17 @@ module.exports = {
         console.log(data, 'all stored messages ');
         return data;
     },
-    userFind: async (data, mail) => {
+     userFind: async (data, mail,userId) => {
         const result = await User.findAll({
             where: {
                 status: data,
                 email: {
                     [Op.ne]: mail
-                }
 
+            },
+            [Op.and]:[
+                sequelize.literal(`user_id NOT IN (SELECT receiver_id FROM connections WHERE sender_id = ${userId} AND status = 'pending')`)          
+              ]
             }
         });
         console.log(result, 'allUser');
@@ -165,13 +168,13 @@ module.exports = {
         try {
             const request = await Connection.findOne({
                 where:
-                {
+                { 
+                    // status:'pending',
                    [ Op.or]:[
                     { sender_id: sId,receiver_id: rId},
                     { sender_id: rId,receiver_id: sId}
                    ]
-                    // sender_id: sId,
-                    // receiver_id: rId
+                    
 
                 }
             })
