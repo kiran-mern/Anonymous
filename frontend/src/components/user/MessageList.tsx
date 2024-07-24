@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React ,{useState,useEffect} from'react'
+import {useModalStore} from '../../zustand/store';
 
 type Message={
     id: number,
@@ -7,13 +8,17 @@ type Message={
     lastMessage: string
 }
 
+
+
 const MessageList = () => {
 
   const token= localStorage.getItem('user')
-  const [connected,setConnected]=useState<Message[]>([])
-  const[requested,setRequested]=useState<Message[]>([])
+  const {connected,setConnected,requested,setRequested,setSelectedUser}= useModalStore()
+  // const [connected,setConnected]=useState<Message[]>([])
+  // const[requested,setRequested]=useState<Message[]>([])
   const [activeTab,setActiveTab]=useState<'connected' | 'requested'>('connected')
   const [isLoading,setIsLoading]=useState(true)
+  const[error,setError]=useState(null)
 
     // const [messages,setMessages]=useState<Message[]>([])
     const messages= activeTab==='connected'? connected: requested
@@ -79,7 +84,7 @@ const MessageList = () => {
         </div>
         <div className="overflow-y-auto">
           {messages.map((message) => (
-            <div key={message.id} className="flex items-center p-4 hover:bg-gray-700">
+            <div key={message.id} className="flex items-center p-4 hover:bg-gray-700" onClick={() => setSelectedUser(message)}>
               <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-3">
                 ID
               </div>
@@ -93,7 +98,7 @@ const MessageList = () => {
                         <p></p>
                     ) : messages.length > 0 ? (
                         messages.map((message) => (
-                            <div key={message.id} className="flex items-center p-4 hover:bg-gray-700">
+                            <div key={message.id} className="flex items-center p-4 hover:bg-gray-700" onClick={() => setSelectedUser(message)}>
                                 <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-3">
                                     ID
                                 </div>
@@ -107,6 +112,7 @@ const MessageList = () => {
                         <p>No messages found.</p>
                     )}
         </div>
+        
       </div>
     
     </>

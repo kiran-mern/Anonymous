@@ -3,40 +3,69 @@ import {create} from 'zustand';
 type ModalState ={
   showModal: boolean;
   setShowModal: (show: boolean) => void;
-
-
   // feeling: string;
   // setFeeling: (feeling: string)=>void;
+};
 
-
-}
 type DeactivateModal = {
   isOpen: boolean;
   setIsOpen: (show: boolean)=> void;
   onClose: () => void;
   onConfirm: () => void;
-}
+};
 
-type StoreState= ModalState & DeactivateModal;
+type Message={
+  id:number,
+  profileName:string,
+  lastMessage:string
+};
 
-export const useModalStore = create<StoreState> ((set) => ({
+type ChatMessage={
+  id:number;
+  sender: string;
+  isSent: boolean;
+  content: string;
+  timeStamp:string
+};
 
-  //ModalState of creating the Post 
+type ChatState={
+  connected:Message[];
+  setConnected:(messages:Message[])=>void;
+  requested:Message[];
+  setRequested:(messages:Message[])=>void;
+  chatMessages:ChatMessage[];
+  addChatMessage:(message:ChatMessage)=>void;
+  selectedUser:Message | null;
+  setSelectedUser: (user:Message | null)=>void;
 
+
+};
+
+type StoreState= ModalState & DeactivateModal & ChatState ;
+
+export const useModalStore = create<StoreState>((set) => ({
+  // ModalState of creating the Post
   showModal: false,
   setShowModal: (show: boolean) => set({ showModal: show }),
 
-  
   // feeling: '',
   // setFeeling: (feeling: string) => set({ feeling }),
 
-  //DeactivateModal
+  // DeactivateModal
+  isOpen: false,
+  setIsOpen: (show: boolean) => set({ isOpen: show }),
+  onClose: () => set({ isOpen: false }),
+  onConfirm: () => {
+    set({ isOpen: false });
+  },
 
-  isOpen:false,
-  setIsOpen:(show:boolean)=> set({isOpen:show}),
-  onClose:()=>set({isOpen:false}),
-  onConfirm:()=>{
-    set({isOpen:false})
-  }
+  // ChatState
+  connected: [],
+  requested: [],
+  chatMessages: [],
+  selectedUser: null,
+  setConnected: (messages: Message[]) => set({ connected: messages }),
+  setRequested: (messages: Message[]) => set({ requested: messages }),
+  addChatMessage: (message: ChatMessage) => set((state) => ({ chatMessages: [...state.chatMessages, message] })),
+  setSelectedUser: (user: Message | null) => set({ selectedUser: user }),
 }));
-

@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
 
     })
 
-    socket.on('personal',({to,message})=>{
+    socket.on('personal',({to,message,groupId})=>{
         const receiver=onlineUsers.get(to);
         if(receiver){
             io.to(receiver).emit('newMessage',{
@@ -63,9 +63,9 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected');
         for (const [userId, userSocket] of onlineUsers.entries()) {
-          if (userSocket.id === socket.id) {
+          if (userSocket=== socket) {
             onlineUsers.delete(userId);
-            io.emit('user_status', { userId, status: 'offline' });
+            io.emit('userStatus', { userId, status: 'offline' });
             break;
           }
         }
