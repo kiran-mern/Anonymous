@@ -263,8 +263,8 @@ module.exports = {
             return result.map((connection) => ({
                 id: connection.id,
                 profileName: connection.sender_id === id ? connection.Receiver.name : connection.Sender.name,
-                userId: connection.sender_id === id ? connection.Receiver.user_id : connection.Sender.user_id,
-                receiverId:connection.receiver_id===id? connection.Sender.user_id:connection.Receiver.user_id
+                receiverId: connection.sender_id === id ?  connection.Sender.user_id:connection.Receiver.user_id,
+                userId:connection.receiver_id===id? connection.Sender.user_id:connection.Receiver.user_id
 
             }))
 

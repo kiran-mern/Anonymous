@@ -273,6 +273,7 @@ module.exports = {
     },
     postChat:async(req,res)=>{
         const {sender_id,receiver_id,content}= req.body
+        console.log(req.body,'varyo');
         try{
             const chat= await uHelpers.createRoom(sender_id, receiver_id,content)
             return res.status(200).json({message:'message stored in db',chat})
@@ -371,6 +372,7 @@ module.exports = {
         const userId=req.user.user_id;
         try{
             const connected= await uHelpers.connectedOne(userId)
+            console.log(connected,'shabmo');
             return res.status(200).json({message:'fetching conncted users',connected})
         }
         catch(err){
