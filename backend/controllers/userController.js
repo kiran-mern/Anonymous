@@ -286,8 +286,10 @@ module.exports = {
     },
     getChat:async(req,res)=>{
         const senderId=req.user.user_id
+        const receiverId= req.query.receiverId
+        console.log(senderId,receiverId,'aaa')
         try{
-            const chat= await uHelpers.allMessage(senderId)
+            const chat= await uHelpers.allMessage(senderId,receiverId)
             return res.status(200).json({message:'messages',chat})
         }
         catch(err){

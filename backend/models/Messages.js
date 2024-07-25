@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../config/database')
+// const User= require('../models/Users')
 
 const Messages = sequelize.define('Messages', {
     id: {
@@ -39,6 +40,7 @@ const Messages = sequelize.define('Messages', {
 
 (async()=>{
     try{
+        // await User.sync({alter:true})
         await Messages.sync({alter:true})
         console.log('Message table updated');
 

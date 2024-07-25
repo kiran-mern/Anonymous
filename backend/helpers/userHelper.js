@@ -135,25 +135,37 @@ module.exports = {
         console.log(result, 'msg stored success in uH');
         return result;
     },
-    allMessage: async (id) => {
+    // allMessage: async (id) => {
+    //     const data = await Message.findAll({
+    //         attributes: ['sender_id', 'receiver_id', 'content', 'timestamps'],
+    //         where: { sender_id: id }
+    //     })
+    //     console.log(data, 'all stored messages ');
+    //     return data;
+    // },
+    allMessage: async (sId, rId) => {
         const data = await Message.findAll({
-            attributes: ['sender_id', 'receiver_id', 'content', 'timestamps'],
-            where: { sender_id: id }
+            where: {
+                [Op.or]: [
+                    { sender_id: sId, receiver_id: rId },
+                    { sender_id: rId, receiver_id: sId }
+                ]
+            },
+            order: [['createdAt', 'Asc']]
         })
-        console.log(data, 'all stored messages ');
+        console.log(data,'makkale');
         return data;
     },
-     userFind: async (data, mail,userId) => {
+    userFind: async (data, mail, userId) => {
         const result = await User.findAll({
             where: {
                 status: data,
                 email: {
                     [Op.ne]: mail
-
-            },
-            [Op.and]:[
-                sequelize.literal(`user_id NOT IN (SELECT receiver_id FROM connections WHERE sender_id = ${userId} AND status = 'pending')`)          
-              ]
+                },
+                [Op.and]: [
+                    sequelize.literal(`user_id NOT IN (SELECT receiver_id FROM "Connections" WHERE sender_id = ${userId} )`)
+                ]
             }
         });
         console.log(result, 'allUser');
@@ -168,13 +180,13 @@ module.exports = {
         try {
             const request = await Connection.findOne({
                 where:
-                { 
+                {
                     // status:'pending',
-                   [ Op.or]:[
-                    { sender_id: sId,receiver_id: rId},
-                    { sender_id: rId,receiver_id: sId}
-                   ]
-                    
+                    [Op.or]: [
+                        { sender_id: sId, receiver_id: rId },
+                        { sender_id: rId, receiver_id: sId }
+                    ]
+
 
                 }
             })
@@ -195,92 +207,95 @@ module.exports = {
     existConnection: async (sId, rId) => {
         const connect = await Connection.findOne({
             where: {
-                sender_id: sId, receiver_id: rId, status: 'pending',notificationStatus: 'unread'
+                sender_id: sId, receiver_id: rId, status: 'pending', notificationStatus: 'unread'
             }
         })
         return connect
     },
     accept: async (sId, rId) => {
-        try{
+        try {
             const update = await Connection.update(
-                { status: 'accepted',notificationStatus: 'read' },
+                { status: 'accepted', notificationStatus: 'read' },
                 { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
             )
             return update
         }
-        catch(err){
-            console.log(err,'error on updating the status ');
-        
+        catch (err) {
+            console.log(err, 'error on updating the status ');
+
         }
     },
-    unwantedUser:async(sId,rId)=>{
-        try{
+    unwantedUser: async (sId, rId) => {
+        try {
             const update = await Connection.update(
-                { status: 'rejected',notificationStatus: 'read' },
+                { status: 'rejected', notificationStatus: 'read' },
                 { where: { sender_id: sId, receiver_id: rId, status: 'pending' } }
             )
             return update
         }
-        catch(err){
-            console.log(err,'error on updating the status ');
-        
+        catch (err) {
+            console.log(err, 'error on updating the status ');
+
         }
 
     },
-    connectedOne:async(id)=>{
-        try{
-            const result= await Connection.findAll({
-                where:{
-                    status:'accepted',
-                    [Op.or]:[
-                        {sender_id:id},
-                        {receiver_id:id}
+        connectedOne: async (id) => {
+        try {
+            const result = await Connection.findAll({
+                where: {
+                    status: 'accepted',
+                    [Op.or]: [
+                        { sender_id: id },
+                        { receiver_id: id }
                     ]
 
-            },
-            include:[{
-                model:User,
-                as:'Sender',
-                attributes:['name','user_id'], 
-            },{
-                model:User,
-                as:'Receiver',
-                attributes: ['name', 'user_id'],
-            }]
-        })
-            return result.map((connection)=>({
-                id:connection.id,
+                },
+                include: [{
+                    model: User,
+                    as: 'Sender',
+                    attributes: ['name', 'user_id'],
+                }, {
+                    model: User,
+                    as: 'Receiver',
+                    attributes: ['name', 'user_id'],
+                }]
+            })
+            return result.map((connection) => ({
+                id: connection.id,
                 profileName: connection.sender_id === id ? connection.Receiver.name : connection.Sender.name,
                 userId: connection.sender_id === id ? connection.Receiver.user_id : connection.Sender.user_id,
+                receiverId:connection.receiver_id===id? connection.Sender.user_id:connection.Receiver.user_id
 
             }))
 
         }
-        catch(err){
-            console.log(err,'error fetching connected users');
+        catch (err) {
+            console.log(err, 'error fetching connected users');
 
-        }  
+        }
     },
-  
-    requestedOne:async(id)=>{
-        try{
-            const result= await Connection.findAll({where:{
-                sender_id:id,status:'pending'},
+
+    requestedOne: async (id) => {
+        try {
+            const result = await Connection.findAll({
+                where: {
+                    sender_id: id, status: 'pending'
+                },
                 include: [{
                     model: User,
                     as: 'Receiver',
                     attributes: ['name', 'user_id']
                 }]
             })
-            return result.map((connection)=>({
-                id:connection.id,
-                profileName:connection.Receiver.name,
-                userId:connection.Receiver.user_id
+            return result.map((connection) => ({
+                id: connection.id,
+                profileName: connection.Receiver.name,
+                userId: connection.Receiver.user_id
 
             }))
         }
-        catch(err){
-            console.log(err,'error fetching requsted users')
+        catch (err) {
+            console.log(err, 'error fetching requsted users')
         }
     }
 

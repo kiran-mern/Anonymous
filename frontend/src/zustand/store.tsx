@@ -17,6 +17,8 @@ type DeactivateModal = {
 type Message={
   id:number,
   profileName:string,
+  userId:number,
+  receiverId:number,
   lastMessage:string
 };
 
@@ -34,6 +36,7 @@ type ChatState={
   requested:Message[];
   setRequested:(messages:Message[])=>void;
   chatMessages:ChatMessage[];
+  setChatMessages:(message:ChatMessage[])=>void;
   addChatMessage:(message:ChatMessage)=>void;
   selectedUser:Message | null;
   setSelectedUser: (user:Message | null)=>void;
@@ -66,6 +69,7 @@ export const useModalStore = create<StoreState>((set) => ({
   selectedUser: null,
   setConnected: (messages: Message[]) => set({ connected: messages }),
   setRequested: (messages: Message[]) => set({ requested: messages }),
+  setChatMessages: (messages: ChatMessage[]) => set({ chatMessages: messages }),
   addChatMessage: (message: ChatMessage) => set((state) => ({ chatMessages: [...state.chatMessages, message] })),
   setSelectedUser: (user: Message | null) => set({ selectedUser: user }),
 }));
