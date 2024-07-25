@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const isAuth= require('../middlewares/isAuth')
 
-const{signup, verifyEmail,loginUser,userPost,postChat,requestedMessage,connectedMessage,cancelRequest,sendRequest,acceptRequest,findConnections,getChat,home,likePosts,getComments, postComments, userStatus,groupJoin,groupCreation,deactivate,availableGroups}=require('../controllers/userController')
+const{signup, verifyEmail,loginUser,userPost,postChat,requestedMessage,connectedMessage,disconnectUser,cancelRequest,sendRequest,acceptRequest,findConnections,getChat,home,likePosts,getComments, postComments, userStatus,groupJoin,groupCreation,deactivate,availableGroups}=require('../controllers/userController')
 const {allNotification}= require('../controllers/notification')
 router.post('/signup',signup)
 router.post('/verify',verifyEmail)
@@ -27,5 +27,6 @@ router.post('/reject',isAuth,cancelRequest)
 router.get('/notification',isAuth,allNotification)
 router.get('/connected',isAuth,connectedMessage)
 router.get('/requested',isAuth,requestedMessage)
+router.post('/remove',isAuth,disconnectUser)
 
 module.exports = router;

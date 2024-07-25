@@ -181,16 +181,12 @@ module.exports = {
             const request = await Connection.findOne({
                 where:
                 {
-                    // status:'pending',
                     [Op.or]: [
                         { sender_id: sId, receiver_id: rId },
                         { sender_id: rId, receiver_id: sId }
                     ]
-
-
                 }
             })
-
             return request;
 
         } catch (err) {
@@ -297,6 +293,20 @@ module.exports = {
         catch (err) {
             console.log(err, 'error fetching requsted users')
         }
+    },
+    removing:async(sId,rId)=>{
+        try {
+            const update = await Connection.update(
+                { status: 'removed' },
+                { where: { sender_id: sId, receiver_id: rId, status: 'accepted' } }
+            )
+            return update
+        }
+        catch (err) {
+            console.log(err, 'error on updating the status ');
+
+        }
+
     }
 
 

@@ -5,7 +5,6 @@ import axios from 'axios'
 
 type ChatMessage = {
   id: number,
-  // sender_id:number,
   sender: string,
   content: string,
   isSent: boolean,
@@ -21,10 +20,6 @@ const ChatArea = () => {
   const [isOnline, setIsOnline] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
-  // const decodedToken: any = token ? jwt_decode(token) : null;
-  // const userId = decodedToken ? decodedToken.user_id : null;
-  // const user= token ? JSON.parse(token): null
-  // const userId= user.user_id;
   const userId= selectedUser ? selectedUser.receiverId.toString(): '1';
   const receiverId = selectedUser ? selectedUser.userId.toString() : '1';
 
@@ -96,7 +91,6 @@ const ChatArea = () => {
     if (inputMessage.trim() && socketRef.current) {
       const newMessage: ChatMessage = {
         id: Date.now(),
-        // sender_id:number,
         sender: userId,
         content: inputMessage,
         isSent: true,
@@ -139,14 +133,14 @@ const ChatArea = () => {
               {selectedUser?.id}
             </div>
             <div>
-              <div className="font-semibold"> {selectedUser?.profileName}</div>
+              <div className="font-semibold text-white"> {selectedUser?.profileName}</div>
               <div className="text-sm text-gray-400 mt-1">
                 {isOnline ? 'Online' : 'Offline'}
               </div>
               <button className="text-sm text-gray-400 mt-1">View profile</button>
             </div>
           </div>
-          <button className="text-2xl"> ⋯ </button>
+          <button className="text-2xl text-white"> ⋯ </button>
         </header>
         <div className="flex-1 overflow-y-auto p-4">
           {chatMessages.map((msg) => (
@@ -155,7 +149,7 @@ const ChatArea = () => {
               className={`mb-4 ${msg.isSent ? 'text-right' : 'text-left'}`}
             >
               <div
-                className={`inline-block p-2 rounded-lg ${msg.isSent ? 'bg-blue-500' : 'bg-gray-700'
+                className={`inline-block p-2 rounded-lg  max-w-xs break-words  ${msg.isSent ? 'bg-blue-500' : 'bg-gray-700'
                   }`}
               >
                 {msg.content}
