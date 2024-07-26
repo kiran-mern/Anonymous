@@ -398,10 +398,11 @@ module.exports = {
         try{
             // const find=await uHelpers.connectedOne(userId)
             const connect= await uHelpers.findRequest(userId,receiverId)
-            if(connect.status='accepted'){
+            console.log(connect,'status');
+            if(connect.status=='accepted'){
                 const remove=await uHelpers.removing(userId,receiverId)
                 return res.status(200).json({message:'removed successfully'})
-            }else if(connect.status='pending'){
+            }else if(connect.status=='pending'){
                 const remove= await uHelpers.unwantedUser(userId,receiverId)
                 return res.status(200).json({message:'removed successfully'})
             }

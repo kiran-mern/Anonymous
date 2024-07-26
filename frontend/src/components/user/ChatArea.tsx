@@ -15,11 +15,10 @@ type ChatMessage = {
 const ChatArea = () => {
   const token = localStorage.getItem('user')
 
-  // const [chatMessages,setChatMessage]= useState<ChatMessage[]>([])
   const { chatMessages, addChatMessage, setChatMessages,selectedUser } = useModalStore();
   const [inputMessage, setInputMessage] = useState('')
   const [isOnline, setIsOnline] = useState(false)
-  // const [isGroup,setIsGroup]=useState(false)
+  const [isGroup,setIsGroup]=useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
   const userId= selectedUser ? selectedUser.receiverId.toString(): '1';
@@ -142,7 +141,7 @@ const ChatArea = () => {
               <button className="text-sm text-gray-400 mt-1">View profile</button>
             </div>
           </div>
-          <More isGroup={ true}/>
+          <More isGroup={ isGroup} userId={userId}/>
           {/* <button className="text-2xl text-white"> ⋯ </button> */}
         </header>
         <div className="flex-1 overflow-y-auto p-4">
