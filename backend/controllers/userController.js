@@ -162,16 +162,29 @@ module.exports = {
         }
     },
     groupCreation: async (req, res) => {
-        const { name, image } = req.body;
-        const user_id = req.user.user_id
-        // console.log(user_id);
-        // console.log(req.user.user_id);
-        // console.log(req.user,'aaaaaaa');
+        const { name, image ,selectedMembers} = req.body;
+        console.log(req.body,'bofybofhd');
+        const creator = req.user.user_id
+        try{
+            const creation = await uHelpers.gCreation(name, image, creator)
+            console.log(creation,'creation');
+            const groupId=creation.group_id;
+            console.log(groupId,'a');
 
-        const creation = await uHelpers.gCreation(name, image, user_id)
-        console.log(creation);
+            const userIdsToAdd= new Set([creator]);
 
+            if(selectedMembers&& selectedMembers.length>0){
+                const membersUserId= await uHelpers.getConnectionById(selectedMembers)
 
+                membersUserId.forEach(id=>userIdsToAdd.add(id))
+            }
+            await Promise.all([...userIdsToAdd].map(userId=>
+            uHelpers.addMembers(groupId,userId)))
+            return res.status(200).json({message:'created successfully',creation})
+
+        }catch(err){
+            console.log(err,'error when creating and adding users to groups');
+        }
     },
     deactivate: async (req, res) => {
         const { email } = req.user
@@ -393,7 +406,8 @@ module.exports = {
     },
     disconnectUser:async(req,res)=>{
         const userId=req.user.user_id;
-        const {receiverId}=req.query.receiverId
+        const {receiverId}=req.body
+        console.log(req.body,'body');
         // const {receiverId}=req.body
         try{
             // const find=await uHelpers.connectedOne(userId)

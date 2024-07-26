@@ -4,6 +4,13 @@ const {sequelize} = require('../config/database')
 // const Groups= require('../models/Group')
 
 const GroupMember=sequelize.define("GroupMembers",{
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true
+
+    },
     group_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

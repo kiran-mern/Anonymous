@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 type DropDownProps = {
     isGroup: boolean;
-    userId: string;
+    receiverId: string;
 }
 
-const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
+const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('user')
     const toggleDropdown = () => setIsOpen(!isOpen)
+   
 
     const handleOption = async (option:string) => {
         try {
@@ -41,7 +42,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
 
     const leaveChannel = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/groupLeave`, { groupId: userId }, {
+            await axios.post(`http://localhost:3000/user/groupLeave`, { groupId: receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -53,7 +54,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
     };
     const report = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/report`, {userId }, {
+            await axios.post(`http://localhost:3000/user/report`, {receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -65,7 +66,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
     };
     const viewGroup = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/viewGroup`, {userId }, {
+            await axios.post(`http://localhost:3000/user/viewGroup`, {receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -77,7 +78,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
     };
     const block = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/block`, { userId }, {
+            await axios.post(`http://localhost:3000/user/block`, { receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -89,16 +90,20 @@ const More: React.FC<DropDownProps> = ({ isGroup, userId }) => {
     };
     const disconnect = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/disconnect`, { userId }, {
+            await axios.post(`http://localhost:3000/user/remove`, { receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
+              
             });
             console.log('disconnect user successfully');
         } catch (error) {
             console.error('Error disconnect user:', error);
         }
     };
+    // useEffect(()=>{
+
+    // },[handleOption])
 
 
     return (

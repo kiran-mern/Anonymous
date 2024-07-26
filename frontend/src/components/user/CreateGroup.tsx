@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 type Person = {
   id: string;
-  name: string;
+  profileName: string;
 }
 
 type CreateGroupModalProps ={
@@ -15,27 +15,41 @@ type CreateGroupModalProps ={
 const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, onCreateGroup }) => {
   const [groupName, setGroupName] = useState('');
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-
-  const availableMembers: Person[] = [
-    { id: '1', name: 'Person_name' },
-    { id: '2', name: 'Person_name' },
-    { id: '3', name: 'Person_name' },
-    { id: '4', name: 'Person_name' },
-    { id: '5', name: 'Person_name' },
-  ];
+  const [availableMembers,setAvailableMembers]=useState<Person[]>([])
 
   const token= localStorage.getItem('user')
-  console.log(token,'last');
+  useEffect(()=>{
+    const fetchAvailableMembers=async()=>{
+      try{
+        const response =await axios.get('http://localhost:3000/user/connected',{
+          headers:{
+            authorization:`${token}`
+          }
+        })
+        setAvailableMembers(response.data.connected)        
+      }catch(err){
+        console.log(err,'error while showing availble members');
+      }
+    };
+    if(isOpen){
+      fetchAvailableMembers()
+    }
+    
+  },[isOpen,token])
   
 
   const handleCreateGroup = async() => {
     try{
         const response=await axios.post('http://localhost:3000/user/createGroup',{
-            name:groupName, image: 'lalala'
+            name:groupName, image: 'lalala',selectedMembers
         },
     {headers:{
         authorization: `${token}`
-    }})
+    }
+  }  
+  )
+  console.log(response,'rerere');
+  
 
         onCreateGroup(groupName, selectedMembers);
         onClose();
@@ -84,7 +98,7 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
               onClick={() => toggleMember(person.id)}
             >
               <div className="w-8 h-8 bg-gray-600 rounded-full mr-2"></div>
-              <span className="text-white">{person.name}</span>
+              <span className="text-white">{person.profileName}</span>
             </div>
           ))}
         </div>

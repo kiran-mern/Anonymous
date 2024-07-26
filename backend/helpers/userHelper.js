@@ -32,11 +32,18 @@ module.exports = {
         }
     },
     gCreation: async (data, img, id) => {
-        const create = await Group.create({
-            groupName: data, image: img, user_id: id
-        })
-        console.log('created');
-        return create
+        try {
+            const create = await Group.create({
+                groupName: data, 
+                image: img, 
+                user_id: id
+            });
+            console.log('Group created');
+            return create;
+        } catch (err) {
+            console.log(err, 'Error creating group');
+            throw err;
+        }
     },
     findUser: async (data) => {
         const user = await User.findOne({ where: { email: data } })
@@ -62,8 +69,16 @@ module.exports = {
 
     },
     addMembers: async (gId, uId) => {
-        const create = await GroupMember.create({ group_id: gId, user_id: uId })
-        return create;
+        try {
+            const groupMember = await GroupMember.create({
+                group_id: gId,
+                user_id: uId
+            });
+            return groupMember;
+        } catch (err) {
+            console.log(err, 'Error adding user to group');
+            throw err;
+        }
 
     },
     viewAll: async () => {
@@ -193,6 +208,7 @@ module.exports = {
             console.log(err, 'error on finding existing request');
         }
     },
+   
     makeConnection: async (sId, rId) => {
         const connection = await Connection.create({
             sender_id: sId, receiver_id: rId, status: 'pending'
@@ -307,7 +323,38 @@ module.exports = {
 
         }
 
-    }
+    },
+    getConnectionById:async(cId)=>{
+        try{
+
+            const connection= await Connection.findAll({
+                where:{id:cId},
+                include:[{
+                    model:User,
+                    as:"Sender",
+                    attributes:['user_id'],
+                },{
+                    model:User,
+                    as:'Receiver',
+                    attributes:['user_id'],
+                }]
+            })
+
+            if (!connection) {
+                throw new Error('Connection not found');
+            }
+            console.log(connection,'aassskdkdkdkdk');
+            const userIds= new Set();
+            connection.forEach(connections=>{
+                userIds.add(connections.sender_id);
+                userIds.add(connections.receiver_id)
+            })
+            return Array.from(userIds)
+        } catch (err) {
+            console.log(err, 'Error fetching user_id for connection');
+            throw err;
+        }
+    },
 
 
 
