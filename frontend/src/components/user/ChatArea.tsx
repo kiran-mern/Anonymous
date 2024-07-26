@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import io, { Socket } from 'socket.io-client'
 import { useModalStore } from '../../zustand/store'
 import axios from 'axios'
+import More from '../common/More'
 
 type ChatMessage = {
   id: number,
@@ -18,6 +19,7 @@ const ChatArea = () => {
   const { chatMessages, addChatMessage, setChatMessages,selectedUser } = useModalStore();
   const [inputMessage, setInputMessage] = useState('')
   const [isOnline, setIsOnline] = useState(false)
+  // const [isGroup,setIsGroup]=useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
   const userId= selectedUser ? selectedUser.receiverId.toString(): '1';
@@ -140,7 +142,8 @@ const ChatArea = () => {
               <button className="text-sm text-gray-400 mt-1">View profile</button>
             </div>
           </div>
-          <button className="text-2xl text-white"> ⋯ </button>
+          <More isGroup={ true}/>
+          {/* <button className="text-2xl text-white"> ⋯ </button> */}
         </header>
         <div className="flex-1 overflow-y-auto p-4">
           {chatMessages.map((msg) => (
