@@ -50,7 +50,7 @@ const MessageList = () => {
         });
         console.log(response);
         
-        const data=await response.data.connected
+        const data=await response.data.connectedUsers
         setConnected(data)
         }
         catch(err){

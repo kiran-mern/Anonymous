@@ -384,9 +384,10 @@ module.exports = {
     connectedMessage:async(req,res)=>{
         const userId=req.user.user_id;
         try{
-            const connected= await uHelpers.connectedOne(userId)
-            console.log(connected,'shabmo');
-            return res.status(200).json({message:'fetching conncted users',connected})
+            const connectedUsers= await uHelpers.connectedOne(userId)
+            const connectedGroups= await uHelpers.connectedGroup(userId)
+            console.log(connectedUsers,'shabmo');
+            return res.status(200).json({message:'fetching conncted users',connectedUsers,connectedGroups})
         }
         catch(err){
             console.log(err,'error fetching connected users ');

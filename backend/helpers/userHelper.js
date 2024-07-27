@@ -276,7 +276,8 @@ module.exports = {
                 id: connection.id,
                 profileName: connection.sender_id === id ? connection.Receiver.name : connection.Sender.name,
                 receiverId: connection.sender_id === id ?  connection.Sender.user_id:connection.Receiver.user_id,
-                userId:connection.receiver_id===id? connection.Sender.user_id:connection.Receiver.user_id
+                userId:connection.receiver_id===id? connection.Sender.user_id:connection.Receiver.user_id,
+                type:'user'
 
             }))
 
@@ -285,6 +286,28 @@ module.exports = {
             console.log(err, 'error fetching connected users');
 
         }
+    },
+    connectedGroup:async(id)=>{
+       try{
+        const groupMembers=await GroupMember.findAll({
+            where:{user_id:id},
+            include:[{
+                model:Group,
+                attributes:['group_id,groupName']
+            }]
+        });
+
+        return groupMembers.map((connection=>({
+            id:connection.Group.group_id,
+            profileName:connection.Group.groupName,
+            type:'group'
+
+        })))
+
+       }catch(err){
+        console.log(err,'error on finding connected groups');
+       }
+
     },
 
     requestedOne: async (id) => {

@@ -42,7 +42,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
 
     const leaveChannel = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/groupLeave`, { groupId: receiverId }, {
+            await axios.post(`http://localhost:3000/user/groupLeft`, { groupId: receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -66,10 +66,11 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
     };
     const viewGroup = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/viewGroup`, {receiverId }, {
+            await axios.get(`http://localhost:3000/user/viewGroup`, {
                 headers: {
                     authorization: `${token}`
-                }
+                },
+                params:{receiverId}
             });
             console.log('view successfully');
         } catch (error) {
