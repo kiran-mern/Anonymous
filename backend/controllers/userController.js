@@ -424,7 +424,29 @@ module.exports = {
         }catch(err){
             console.log(err,'error while removing the connected user');
         }
-    }
+    },
+    leaveGroup:async(req,res)=>{
+        const {groupId}=req.body
+        const userId= req.user.user_id;
+
+        try{
+            await uHelpers.removeMember(groupId,userId)
+            const group= await uHelpers.findGroup(groupId)
+            if(group.admin==userId){
+                const remainingMembers=await uHelpers.getGroupMembers(groupId)
+                if(remainingMembers.length > 0){
+                    const newAdmin=remainingMembers[0].user_id;
+                    await uHelpers.updateAdmin(groupId,newAdmin)
+                }else{
+                    await uHelpers.deleteGroup(groupId)
+                }
+            }
+            return res.status(200).json({ message: 'Left the group successfully' });
+        }
+        catch(err){
+            console.log(err,'error while leave from the group');
+        }
+    },
 
     
 

@@ -22,7 +22,7 @@ const Group=sequelize.define("Group",{
         defaultValue: DataTypes.NOW(),
         allowNull:false
     },
-    user_id:{
+    admin:{
         type:DataTypes.INTEGER,
         // allowNull:false,
         references:{

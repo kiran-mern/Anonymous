@@ -26,9 +26,14 @@ const GroupMember=sequelize.define("GroupMembers",{
             model: 'Users',
             key: 'user_id'
         }
-    }
+    },
+    createdAt:{
+        type:DataTypes.DATE,
+        defaultValue: DataTypes.NOW(),
+        allowNull:false
+    },
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 (async () => {

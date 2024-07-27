@@ -36,7 +36,7 @@ module.exports = {
             const create = await Group.create({
                 groupName: data, 
                 image: img, 
-                user_id: id
+                admin: id
             });
             console.log('Group created');
             return create;
@@ -62,9 +62,9 @@ module.exports = {
         }
 
     },
-    findGroup: async (gId, uId) => {
-        const find = await Group.findOne({ where: { group_id: gId, user_id: uId } });
-        // console.log(find,'ssssssss');
+    findGroup: async (gId) => {
+        const find = await Group.findOne({ where: { group_id: gId } });
+        console.log(find,'group found');
         return find;
 
     },
@@ -355,7 +355,27 @@ module.exports = {
             throw err;
         }
     },
+    removeMember:async(gId,uId)=>{
+        const result= await GroupMember.destroy({where:{group_id:gId,user_id:uId}})
+        return result;
+    },
 
+    getGroupMembers:async(gId)=>{
+
+        const members= await GroupMember.findAll({where:{group_id:gId}})
+        return members;
+    },
+    deleteGroup:async(gId)=>{
+        const admin = await Group.destroy({where:{group_id:gId}})
+        return admin;
+
+    },
+    updateAdmin:async(gId,uId)=>{
+        const updatedGroup=await Group.update({admin:uId},{
+            where:{group_id:gId}
+        })
+        return updatedGroup
+    }
 
 
 
