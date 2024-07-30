@@ -26,7 +26,7 @@ const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onClose, on
             authorization:`${token}`
           }
         })
-        setAvailableMembers(response.data.connected)        
+        setAvailableMembers(response.data.connectedUsers)        
       }catch(err){
         console.log(err,'error while showing availble members');
       }

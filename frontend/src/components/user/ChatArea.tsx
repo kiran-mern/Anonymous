@@ -9,31 +9,46 @@ type ChatMessage = {
   sender: string,
   content: string,
   isSent: boolean,
+  type:'user'| 'group',
   timeStamp: string
 }
 
 const ChatArea = () => {
   const token = localStorage.getItem('user')
 
-  const { chatMessages, addChatMessage, setChatMessages,selectedUser } = useModalStore();
+  const { chatMessages, addChatMessage, setChatMessages,selectedUser,connectedGroups } = useModalStore();
   const [inputMessage, setInputMessage] = useState('')
   const [isOnline, setIsOnline] = useState(false)
-  const [isGroup,setIsGroup]=useState(false)
+  const [isGroup,setIsGroup]=useState(selectedUser?.type === 'group');
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
-  const userId= selectedUser ? selectedUser.receiverId.toString(): '1';
-  const receiverId = selectedUser ? selectedUser.userId.toString() : '1';
+  // const userId=  selectedUser ? selectedUser.receiverId.toString(): '1';
+  // const receiverId =isGroup? selectedUser?.groupId: selectedUser?.userId.toString() || '1';
+  const type = isGroup ? 'group' : 'user'  
+  console.log(selectedUser);
+  console.log(type,'typr');
+  
+  
+  const userId= selectedUser ? selectedUser.receiverId.toString(): '0';
+  // const receiverId = selectedUser ? selectedUser.userId.toString() : '1';
+  // const receiverId = selectedUser ? selectedUser.userId?.toString() || selectedUser.groupId.toString() : '1';
+const receiverId=isGroup?selectedUser?.groupId?.toString() :selectedUser?.userId?.toString() || '0';
+console.log(userId,receiverId,'lstonme');
+ useEffect(() => {
+    setIsGroup(selectedUser?.type === 'group');
+  }, [selectedUser]);
 
+  // const groupId= isGroup? receiverId : null;
   const fetchMessages = async () => {
     if (selectedUser) {
       console.log('Fetching messages for:', selectedUser.userId);
-      const receiverId = selectedUser.userId.toString();
+      // const receiverId = selectedUser.userId.toString();
       try {
         const response = await axios.get(`http://localhost:3000/user/allMessage`, {
           headers: {
             authorization: `${token}`
           },
-          params: { receiverId },
+          params: { receiverId:isGroup?selectedUser.groupId:selectedUser.userId,type},
         })
         console.log(response.data,'cha varunda');
         setChatMessages(response.data.chat)
@@ -50,7 +65,8 @@ const ChatArea = () => {
     addChatMessage({
       ...message,
       isSent: message.sender === userId,
-      timeStamp: message.timeStamp
+      timeStamp: message.timeStamp,
+      type: message.type
     });
   }, [addChatMessage, userId]);
 
@@ -95,6 +111,7 @@ const ChatArea = () => {
         sender: userId,
         content: inputMessage,
         isSent: true,
+        type,
         timeStamp: new Date().toISOString()
 
       }
@@ -102,8 +119,11 @@ const ChatArea = () => {
       try {
          await axios.post('http://localhost:3000/user/chat', {
           sender_id: userId,
-          receiver_id: receiverId,
-          content: inputMessage
+          // receiver_id: receiverId,
+          receiver_id: isGroup ? null : receiverId,
+          group_id: isGroup ? receiverId : null,
+          content: inputMessage,
+          type,
         }, {
           headers: {
             authorization: `${token}`

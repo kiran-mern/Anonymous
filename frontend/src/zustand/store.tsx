@@ -19,12 +19,15 @@ type Message={
   profileName:string,
   userId:number,
   receiverId:number,
-  lastMessage:string
+  lastMessage:string,
+  groupId?:number,
+  type:'user' | 'group',
 };
 
 type ChatMessage={
   id:number;
   sender: string;
+  type:string,
   isSent: boolean;
   content: string;
   timeStamp:string
@@ -33,6 +36,8 @@ type ChatMessage={
 type ChatState={
   connected:Message[];
   setConnected:(messages:Message[])=>void;
+  connectedGroups:Message[];
+  setConnectedGroups:(messages:Message[])=>void;
   requested:Message[];
   setRequested:(messages:Message[])=>void;
   chatMessages:ChatMessage[];
@@ -65,9 +70,11 @@ export const useModalStore = create<StoreState>((set) => ({
   // ChatState
   connected: [],
   requested: [],
+  connectedGroups:[],
   chatMessages: [],
   selectedUser: null,
   setConnected: (messages: Message[]) => set({ connected: messages }),
+  setConnectedGroups:(messages:Message[])=>set({connectedGroups:messages}),
   setRequested: (messages: Message[]) => set({ requested: messages }),
   setChatMessages: (messages: ChatMessage[]) => set({ chatMessages: messages }),
   addChatMessage: (message: ChatMessage) => set((state) => ({ chatMessages: [...state.chatMessages, message] })),

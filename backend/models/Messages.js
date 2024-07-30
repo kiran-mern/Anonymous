@@ -4,7 +4,7 @@ const { sequelize } = require('../config/database')
 
 const Messages = sequelize.define('Messages', {
     id: {
-        type:DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -13,41 +13,51 @@ const Messages = sequelize.define('Messages', {
     sender_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references:{
-            model:'Users',
-            key:'user_id'
+        references: {
+            model: 'Users',
+            key: 'user_id'
         },
-        onDelete:'CASCADE'
+        onDelete: 'CASCADE'
 
     },
     receiver_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references:{
-            model:'Users',
-            key:'user_id'
+        allowNull: true,
+        references: {
+            model: 'Users',
+            key: 'user_id'
         },
-        onDelete:'CASCADE'
+        onDelete: 'CASCADE'
     },
-    content:{
-        type:DataTypes.STRING,
-        allowNull:false
+    group_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'Groups',
+            key: 'group_id'
+        }
+    },
+    content: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+
     }
-   
-}, {timestamps:true}
+}, { timestamps: true }
 
 );
 
-(async()=>{
-    try{
+(async () => {
+    try {
         // await User.sync({alter:true})
-        await Messages.sync({alter:true})
+        await Messages.sync({ alter: true })
         console.log('Message table updated');
-
-
-    }catch(err){
+    } catch (err) {
         console.log('error on updating message table');
 
     }
 })();
-module.exports=Messages;
+module.exports = Messages;

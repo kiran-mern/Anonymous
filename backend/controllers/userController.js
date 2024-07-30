@@ -285,10 +285,16 @@ module.exports = {
         }
     },
     postChat:async(req,res)=>{
-        const {sender_id,receiver_id,content}= req.body
+        const {sender_id,receiver_id,content,type,group_id}= req.body
         console.log(req.body,'varyo');
+        let chat;
         try{
-            const chat= await uHelpers.createRoom(sender_id, receiver_id,content)
+            if(type==='user'){
+                 chat= await uHelpers.createRoom(sender_id, receiver_id,content,type)
+            }else if(type==='group'){
+                chat=await uHelpers.createRoom(sender_id,group_id,content,type)
+
+            }
             return res.status(200).json({message:'message stored in db',chat})
                
         }
@@ -300,10 +306,17 @@ module.exports = {
     },
     getChat:async(req,res)=>{
         const senderId=req.user.user_id
-        const receiverId= req.query.receiverId
-        console.log(senderId,receiverId,'aaa')
+        const {receiverId,type}= req.query
+       
+        console.log(senderId,receiverId,type,'aaa')
+        let chat;
         try{
-            const chat= await uHelpers.allMessage(senderId,receiverId)
+            if(type==='group'){
+                 chat= await uHelpers.allMessage(senderId,receiverId,type)
+            }
+            else if (type==='user'){
+                 chat= await uHelpers.allMessage(senderId,receiverId,type)
+            }
             return res.status(200).json({message:'messages',chat})
         }
         catch(err){
@@ -386,7 +399,7 @@ module.exports = {
         try{
             const connectedUsers= await uHelpers.connectedOne(userId)
             const connectedGroups= await uHelpers.connectedGroup(userId)
-            console.log(connectedUsers,'shabmo');
+            console.log(connectedUsers,connectedGroups,'shabmo');
             return res.status(200).json({message:'fetching conncted users',connectedUsers,connectedGroups})
         }
         catch(err){

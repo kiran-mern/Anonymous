@@ -5,7 +5,10 @@ import {useModalStore} from '../../zustand/store';
 type Message={
     id: number,
     profileName: string,
-    lastMessage: string
+    lastMessage: string,
+    type:'user' | 'group',
+    userId? : number,
+    groupId?: number
 }
 
 
@@ -13,7 +16,8 @@ type Message={
 const MessageList = () => {
 
   const token= localStorage.getItem('user')
-  const {connected,setConnected,requested,setRequested,setSelectedUser}= useModalStore()
+  const {connected,setConnected,requested,connectedGroups,setConnectedGroups,setRequested,setSelectedUser}= useModalStore()
+  // const [connectedGroups,setConnectedGroups]=useState<Message[]>([])
   // const [connected,setConnected]=useState<Message[]>([])
   // const[requested,setRequested]=useState<Message[]>([])
   const [activeTab,setActiveTab]=useState<'connected' | 'requested'>('connected')
@@ -21,7 +25,7 @@ const MessageList = () => {
   const[error,setError]=useState(null)
 
     // const [messages,setMessages]=useState<Message[]>([])
-    const messages= activeTab==='connected'? connected: requested
+    const messages= activeTab==='connected'? [...connected,...connectedGroups]: requested
 
     useEffect(()=>{
       const fetchRequestedMessage=async()=>{
@@ -50,8 +54,9 @@ const MessageList = () => {
         });
         console.log(response);
         
-        const data=await response.data.connectedUsers
-        setConnected(data)
+        const {connectedUsers,connectedGroups}=await response.data
+        setConnected(connectedUsers)
+        setConnectedGroups(connectedGroups)
         }
         catch(err){
           console.log(err,'not fetching requested');
@@ -63,7 +68,7 @@ const MessageList = () => {
       
       fetchRequestedMessage()
 
-    },[activeTab,token])
+    },[activeTab,token, setConnected, setRequested])
     
 
   return (
