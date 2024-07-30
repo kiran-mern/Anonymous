@@ -317,6 +317,7 @@ module.exports = {
             else if (type==='user'){
                  chat= await uHelpers.allMessage(senderId,receiverId,type)
             }
+            console.log(chat,'vgfg');
             return res.status(200).json({message:'messages',chat})
         }
         catch(err){

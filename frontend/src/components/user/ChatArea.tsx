@@ -19,47 +19,56 @@ const ChatArea = () => {
   const { chatMessages, addChatMessage, setChatMessages,selectedUser,connectedGroups } = useModalStore();
   const [inputMessage, setInputMessage] = useState('')
   const [isOnline, setIsOnline] = useState(false)
-  const [isGroup,setIsGroup]=useState(selectedUser?.type === 'group');
+  // const [isGroup,setIsGroup]=useState(selectedUser?.type === 'group');
+  const [isGroup, setIsGroup] = useState(false);
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
-  // const userId=  selectedUser ? selectedUser.receiverId.toString(): '1';
-  // const receiverId =isGroup? selectedUser?.groupId: selectedUser?.userId.toString() || '1';
-  const type = isGroup ? 'group' : 'user'  
+  // const type = isGroup ? 'group' : 'user'  
   console.log(selectedUser);
-  console.log(type,'typr');
+  // console.log(type,'typr');
   
   
-  const userId= selectedUser ? selectedUser.receiverId.toString(): '0';
-  // const receiverId = selectedUser ? selectedUser.userId.toString() : '1';
-  // const receiverId = selectedUser ? selectedUser.userId?.toString() || selectedUser.groupId.toString() : '1';
+const userId= selectedUser ? selectedUser.receiverId.toString(): '0';
 const receiverId=isGroup?selectedUser?.groupId?.toString() :selectedUser?.userId?.toString() || '0';
 console.log(userId,receiverId,'lstonme');
  useEffect(() => {
+  if(selectedUser){
+
     setIsGroup(selectedUser?.type === 'group');
+  }
+    // fetchMessages()
+
   }, [selectedUser]);
 
   // const groupId= isGroup? receiverId : null;
-  const fetchMessages = async () => {
-    if (selectedUser) {
-      console.log('Fetching messages for:', selectedUser.userId);
-      // const receiverId = selectedUser.userId.toString();
-      try {
-        const response = await axios.get(`http://localhost:3000/user/allMessage`, {
-          headers: {
-            authorization: `${token}`
-          },
-          params: { receiverId:isGroup?selectedUser.groupId:selectedUser.userId,type},
-        })
-        console.log(response.data,'cha varunda');
-        setChatMessages(response.data.chat)
-        
+  useEffect(()=>{
+    const fetchMessages = async () => {
+      if (selectedUser) {
+        console.log('Fetching messages for:', selectedUser.userId);
+        // const receiverId = selectedUser.userId.toString();
+        try {
+          const type = isGroup ? 'group' : 'user';
+          const receiverId = isGroup ? selectedUser?.groupId : selectedUser?.userId;
+          const response = await axios.get(`http://localhost:3000/user/allMessage`, {
+            headers: {
+              authorization: `${token}`
+            },
+            params: { receiverId,type},
+          })
+          console.log(response.data,'cha varunda');
+          setChatMessages(response.data.chat)
+          
+        }
+        catch (err) {
+          console.log(err, 'error when fetching messages');
+  
+        }
       }
-      catch (err) {
-        console.log(err, 'error when fetching messages');
+    };
+    fetchMessages();
 
-      }
-    }
-  };
+  },[selectedUser, isGroup, setChatMessages, token])
+ 
 
   const handleNewMessage = useCallback((message: ChatMessage) => {
     addChatMessage({
@@ -82,9 +91,9 @@ console.log(userId,receiverId,'lstonme');
     }
   }, [receiverId]);
 
-  useEffect(() => {    
-    fetchMessages()
-  }, [selectedUser])
+  // useEffect(() => {    
+  //   fetchMessages()
+  // }, [selectedUser])
 
   useEffect(() => {
     socketRef.current = io('http://localhost:3000')
@@ -111,7 +120,7 @@ console.log(userId,receiverId,'lstonme');
         sender: userId,
         content: inputMessage,
         isSent: true,
-        type,
+        type:isGroup? 'group':'user',
         timeStamp: new Date().toISOString()
 
       }
@@ -123,7 +132,7 @@ console.log(userId,receiverId,'lstonme');
           receiver_id: isGroup ? null : receiverId,
           group_id: isGroup ? receiverId : null,
           content: inputMessage,
-          type,
+          type:isGroup? 'group':'user',
         }, {
           headers: {
             authorization: `${token}`
