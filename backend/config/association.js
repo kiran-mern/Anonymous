@@ -13,6 +13,10 @@ Connection.belongsTo(Users, { as: 'Receiver', foreignKey: 'receiver_id' });
 GroupMember.belongsTo(Group, { foreignKey: 'group_id' });
 Group.hasMany(GroupMember, { foreignKey: 'group_id' });
 
+GroupMember.belongsTo(Users,{foreignKey:'user_id'});
+Users.hasMany(GroupMember,{foreignKey:'user_id'});
+
+
 // Sync the models with the database
 (async () => {
     try {

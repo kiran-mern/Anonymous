@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useNavigate,Link } from 'react-router-dom';
 
 type DropDownProps = {
     isGroup: boolean;
@@ -8,7 +9,10 @@ type DropDownProps = {
 }
 
 const More: React.FC<DropDownProps> = ({ isGroup, receiverId, onViewGroup }) => {
+    const navigate = useNavigate();
+
     console.log({ isGroup, receiverId, onViewGroup },'poiew');
+    // onViewGroup();
     
 
     const [isOpen, setIsOpen] = useState(false)
@@ -27,7 +31,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId, onViewGroup }) => 
                     await report();
                     break;
                 case 'View group':
-                    await viewGroup();
+                     viewGroup();
                     break;
                 case 'Block':
                     await block();
@@ -81,16 +85,24 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId, onViewGroup }) => 
         //         console.error('Error view channel:', error);
         //     }
         // };
-        try {
-            if (onViewGroup) {        
-                    console.log('view successfully1');
+        // try {
+        //     // if (onViewGroup) {        
+        //             console.log('view successfully1');
 
 
-                onViewGroup(); // Call the passed function instead of making the API call here
-            }
-            console.log('view successfully');
-        } catch (error) {
-            console.error('Error view channel:', error);
+        //         onViewGroup(); // Call the passed function instead of making the API call here
+        //     // }
+        //     // console.log('view successfully');
+        //     // else{
+        //         console.log('onVuew nir s');
+                
+        //     // }
+        // } catch (error) {
+        //     console.error('Error view channel:', error);
+        // }
+
+        if (isGroup) {
+            navigate(`/groupMembers/${receiverId}`);
         }
     };
     const block = async () => {

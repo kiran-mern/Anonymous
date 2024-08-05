@@ -9,6 +9,7 @@ import Deactivate from '../components/user/DeactivateModal'
 import Message from '../pages/User/Message'
 import FindConnection from '../pages/User/FindConnection'
 import Notification from '../components/user/Notification'
+import GroupDetails from '../pages/User/ViewGroup'
 const userRouter = () => {
     return (
         <>
@@ -22,6 +23,7 @@ const userRouter = () => {
                 <Route path='/message' element={<Message/>}/>
                 <Route path='/find' element={<FindConnection/>} />
                 <Route path='/notification' element={<Notification/>}/>
+                <Route path='/groupMembers/:groupId' element={<GroupDetails/>}/>
                 
 
 

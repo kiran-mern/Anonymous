@@ -463,12 +463,18 @@ module.exports = {
         }
     },
     viewMembers:async(req,res)=>{
-        const {groupId}=req.body
+        const {groupId}=req.query
         const userId= req.user.user_id;
         console.log(groupId,userId,'basics needed');
         try{
-            const members=await uHelpers.groupMembers(groupId,userId)
-            return res.status(200).json({message:'fetching group members successfully ', members})
+            const members=await uHelpers.groupMembers(groupId)
+            const formattedMembers=members.map(member=>({
+                id:member.id,
+                groupId:member.group_id,
+                name:member.User.name,
+                userId:member.user_id
+            }))
+            return res.status(200).json({message:'fetching group members successfully ', members:formattedMembers})
 
         }catch(err){
             console.log(err,'error while fetching group members');

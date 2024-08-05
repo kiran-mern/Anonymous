@@ -453,11 +453,17 @@ createRoom: async (sId, rId, data, type) => {
     );
     return updatedGroup;
   },
-  groupMembers:async(gId,uId)=>{
+  groupMembers:async(gId)=>{
     try{
+
+        // const group= 
         const result=await GroupMember.findAll({where:{
-            groupId:gId,userId:uId
-        }})
+            group_id:gId
+        },
+    include:[{
+        model:User,
+        attributes:['name']
+    }]})
         console.log(result,'all members');
         return result
     }catch(err){
