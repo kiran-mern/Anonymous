@@ -170,7 +170,7 @@ console.log(userId,receiverId,'lstonme');
               <button className="text-sm text-gray-400 mt-1">View profile</button>
             </div>
           </div>
-          <More isGroup={ isGroup} receiverId={receiverId}/>
+          <More isGroup={ isGroup} receiverId={receiverId} />
           {/* <button className="text-2xl text-white"> ⋯ </button> */}
         </header>
         <div className="flex-1 overflow-y-auto p-4">

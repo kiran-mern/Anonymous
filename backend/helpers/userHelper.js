@@ -453,4 +453,17 @@ createRoom: async (sId, rId, data, type) => {
     );
     return updatedGroup;
   },
+  groupMembers:async(gId,uId)=>{
+    try{
+        const result=await GroupMember.findAll({where:{
+            groupId:gId,userId:uId
+        }})
+        console.log(result,'all members');
+        return result
+    }catch(err){
+        console.log(err,'error while viewing members in grop');
+
+    }
+
+  }
 };

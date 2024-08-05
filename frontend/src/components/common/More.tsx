@@ -3,17 +3,21 @@ import axios from 'axios'
 
 type DropDownProps = {
     isGroup: boolean;
-    receiverId: string;
+    receiverId: number;
+    onViewGroup?: () => void;
 }
 
-const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
+const More: React.FC<DropDownProps> = ({ isGroup, receiverId, onViewGroup }) => {
+    console.log({ isGroup, receiverId, onViewGroup },'poiew');
+    
 
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('user')
     const toggleDropdown = () => setIsOpen(!isOpen)
-   
 
-    const handleOption = async (option:string) => {
+
+    const handleOption = async (option: string) => {
+        console.log('Option selected:', option);
         try {
             switch (option) {
                 case 'Leave channel':
@@ -54,7 +58,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
     };
     const report = async () => {
         try {
-            await axios.post(`http://localhost:3000/user/report`, {receiverId }, {
+            await axios.post(`http://localhost:3000/user/report`, { receiverId }, {
                 headers: {
                     authorization: `${token}`
                 }
@@ -65,13 +69,25 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
         }
     };
     const viewGroup = async () => {
+        //     try {
+        //         await axios.get(`http://localhost:3000/user/viewGroup`, {
+        //             headers: {
+        //                 authorization: `${token}`
+        //             },
+        //             params:{groupId:receiverId}
+        //         });
+        //         console.log('view successfully');
+        //     } catch (error) {
+        //         console.error('Error view channel:', error);
+        //     }
+        // };
         try {
-            await axios.get(`http://localhost:3000/user/viewGroup`, {
-                headers: {
-                    authorization: `${token}`
-                },
-                params:{receiverId}
-            });
+            if (onViewGroup) {        
+                    console.log('view successfully1');
+
+
+                onViewGroup(); // Call the passed function instead of making the API call here
+            }
             console.log('view successfully');
         } catch (error) {
             console.error('Error view channel:', error);
@@ -95,7 +111,7 @@ const More: React.FC<DropDownProps> = ({ isGroup, receiverId }) => {
                 headers: {
                     authorization: `${token}`
                 }
-              
+
             });
             console.log('disconnect user successfully');
         } catch (error) {

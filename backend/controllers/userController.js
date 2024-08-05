@@ -462,6 +462,18 @@ module.exports = {
             console.log(err,'error while leave from the group');
         }
     },
+    viewMembers:async(req,res)=>{
+        const {groupId}=req.body
+        const userId= req.user.user_id;
+        console.log(groupId,userId,'basics needed');
+        try{
+            const members=await uHelpers.groupMembers(groupId,userId)
+            return res.status(200).json({message:'fetching group members successfully ', members})
+
+        }catch(err){
+            console.log(err,'error while fetching group members');
+        }
+    }
 
     
 
