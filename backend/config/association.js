@@ -16,6 +16,8 @@ Group.hasMany(GroupMember, { foreignKey: 'group_id' });
 GroupMember.belongsTo(Users,{foreignKey:'user_id'});
 Users.hasMany(GroupMember,{foreignKey:'user_id'});
 
+Group.belongsTo(Users, { foreignKey: 'admin', as: 'adminUser' });
+
 
 // Sync the models with the database
 (async () => {

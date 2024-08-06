@@ -468,13 +468,8 @@ module.exports = {
         console.log(groupId,userId,'basics needed');
         try{
             const members=await uHelpers.groupMembers(groupId)
-            const formattedMembers=members.map(member=>({
-                id:member.id,
-                groupId:member.group_id,
-                name:member.User.name,
-                userId:member.user_id
-            }))
-            return res.status(200).json({message:'fetching group members successfully ', members:formattedMembers})
+            console.log(members,'kiran');
+            return res.status(200).json({message:'fetching group members successfully ', members})
 
         }catch(err){
             console.log(err,'error while fetching group members');

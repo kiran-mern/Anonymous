@@ -456,16 +456,36 @@ createRoom: async (sId, rId, data, type) => {
   groupMembers:async(gId)=>{
     try{
 
-        // const group= 
-        const result=await GroupMember.findAll({where:{
+        const group= await Group.findOne({where:{
+            group_id:gId},
+        include:[{
+            model:User,
+            attributes:['name'],
+            as:'adminUser'
+        }]
+    });
+        const members=await GroupMember.findAll({where:{
             group_id:gId
         },
     include:[{
         model:User,
         attributes:['name']
-    }]})
-        console.log(result,'all members');
-        return result
+    }]
+})
+const groupData = {
+    groupName: group.groupName,
+    admin: {
+        user_id: group.admin,
+        name: group.adminUser.name,
+    },
+    members: members.map(member => ({
+        user_id: member.user_id,
+        name: member.User.name
+    }))
+};
+
+console.log(groupData, 'group data with admin and members');
+return groupData;
     }catch(err){
         console.log(err,'error while viewing members in grop');
 
