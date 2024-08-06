@@ -474,6 +474,19 @@ module.exports = {
         }catch(err){
             console.log(err,'error while fetching group members');
         }
+    },
+    viewById:async(req,res)=>{
+        try{
+            const userId= req.user.user_id;
+            const {receiverId}=req.body;
+            console.log(req.body,'bofy');
+            const viewPost=await uHelpers.viewIndividualPosts(receiverId)
+            console.log(viewPost,'viewPost');
+            return res.status(200).json({message:'fetching  all posts successfully',viewPost})
+        }
+        catch(err){
+            console.log(err,'error while fething individual posts ')
+        }
     }
 
     

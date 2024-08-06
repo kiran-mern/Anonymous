@@ -4,7 +4,7 @@ const isAuth= require('../middlewares/isAuth')
 
 const{signup, verifyEmail,loginUser,userPost,postChat,requestedMessage,connectedMessage,leaveGroup,
      disconnectUser,cancelRequest,sendRequest,acceptRequest,findConnections,getChat,home,likePosts,
-     viewMembers,
+     viewMembers,viewById,
      getComments, postComments, userStatus,groupJoin,groupCreation,deactivate,availableGroups}=require('../controllers/userController')
 const {allNotification}= require('../controllers/notification')
 router.post('/signup',signup)
@@ -14,7 +14,7 @@ router.get('/home',isAuth,home)
 router.post('/login',loginUser)
 router.post('/createPost',userPost)
 router.post('/setStatus',isAuth,userStatus)
-router.post('/createGroup',isAuth,groupCreation)
+router.post('/createGoup',isAuth,groupCreation)
 router.post('/deactivate',isAuth,deactivate)
 router.get('/allGroups',isAuth,availableGroups)
 router.post('/joinGroup',isAuth,groupJoin)
@@ -33,5 +33,6 @@ router.get('/requested',isAuth,requestedMessage)
 router.post('/remove',isAuth,disconnectUser)
 router.post('/groupLeft',isAuth,leaveGroup)
 router.get('/viewGroup',isAuth,viewMembers)
+router.get('/viewPosts',isAuth,viewById)
 
 module.exports = router;

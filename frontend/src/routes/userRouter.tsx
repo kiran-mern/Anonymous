@@ -10,6 +10,7 @@ import Message from '../pages/User/Message'
 import FindConnection from '../pages/User/FindConnection'
 import Notification from '../components/user/Notification'
 import GroupDetails from '../pages/User/ViewGroup'
+import Profile from '../pages/User/Profile'
 const userRouter = () => {
     return (
         <>
@@ -24,6 +25,7 @@ const userRouter = () => {
                 <Route path='/find' element={<FindConnection/>} />
                 <Route path='/notification' element={<Notification/>}/>
                 <Route path='/groupMembers/:groupId' element={<GroupDetails/>}/>
+                <Route path='/userProfile' element={<Profile/>} />
                 
 
 
