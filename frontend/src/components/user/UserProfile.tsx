@@ -16,7 +16,8 @@ type UserData={
     name:string,
     connectionsCount:number,
     postsCount:number,
-    posts:Post[]
+    posts:Post[],
+    
 }
 
 const UserProfiles = () => {
@@ -81,7 +82,7 @@ const UserProfiles = () => {
       }
   return (
     <UserProfile name={userData.name} connectionsCount={userData.connectionsCount}
-     postsCount={userData.postsCount} posts={userData.posts} />
+     postsCount={userData.postsCount} posts={userData.posts}  />
 )
 }
 

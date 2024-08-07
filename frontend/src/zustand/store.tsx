@@ -49,7 +49,12 @@ type ChatState={
 
 };
 
-type StoreState= ModalState & DeactivateModal & ChatState ;
+type UserState={
+  userId:number | null,
+  setUserId:(id:number)=>void
+}
+
+type StoreState= ModalState & DeactivateModal & ChatState& UserState ;
 
 export const useModalStore = create<StoreState>((set) => ({
   // ModalState of creating the Post
@@ -79,4 +84,8 @@ export const useModalStore = create<StoreState>((set) => ({
   setChatMessages: (messages: ChatMessage[]) => set({ chatMessages: messages }),
   addChatMessage: (message: ChatMessage) => set((state) => ({ chatMessages: [...state.chatMessages, message] })),
   setSelectedUser: (user: Message | null) => set({ selectedUser: user }),
+
+  //UserState
+  userId: null,
+  setUserId: (id: number) => set({ userId:id }),
 }));

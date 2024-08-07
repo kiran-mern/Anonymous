@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import {useNavigate,Link} from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useModalStore } from "../../zustand/store";
 
 type Login={
     email: string;
@@ -12,6 +13,7 @@ type LoginResponse={
     token: string;
     role: 'admin' | 'user';
     message?: string;
+    user_id:number,
 
 }
 type LoginProps={
@@ -48,6 +50,10 @@ const handleLogin= async(e:React.FormEvent)=>{
     const handleLoginResponse  = (response:AxiosResponse<LoginResponse>) => {
         const token = response.data.token;
         console.log('restttt',response);
+        const userId=response.data.user_id;
+        // console.log(userId);
+        
+        useModalStore.getState().setUserId(userId)
     
           if (response.data.role==='admin') {
             localStorage.setItem("admin", token);

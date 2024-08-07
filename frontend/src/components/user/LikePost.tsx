@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import axios from 'axios'
 
 type LikeButton={
@@ -10,6 +10,9 @@ type LikeButton={
 const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
 
     const [useLike,setUseLike]= useState(likes)
+    useEffect(() => {
+        setUseLike(likes);
+    }, [likes]);
 
     const token= localStorage.getItem('user')
     const handleLike=async()=>{
@@ -23,7 +26,7 @@ const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
             setUseLike(newLike)
             console.log(response,'ooo');
             
-            onUpdateLike(post_id,response.data.likeCount)
+            onUpdateLike(post_id,newLike)
 
         }
         catch(err){

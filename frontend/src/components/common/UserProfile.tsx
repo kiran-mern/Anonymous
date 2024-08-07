@@ -13,7 +13,7 @@ type UserProfileProps={
     name:string,
     connectionsCount:number,
     postsCount:number,
-    posts:Post[]
+    posts:Post[],
 }
 
 
@@ -41,13 +41,13 @@ return(
       <p>{connectionsCount} connections</p>
     </div>
     <h3 className="text-xl font-bold mb-4">POSTS</h3>
-    {/* <div className="space-y-4">
+    <div className="space-y-4">
       {posts.map((post) => (
         <div key={post.id} className="border-t border-gray-800 pt-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-sm mr-2">
-                {post.profileName.charAt(0)}
+                {post.profileName}
               </div>
               <p className="font-bold">{post.profileName}</p>
             </div>
@@ -70,7 +70,7 @@ return(
           </div>
         </div>
       ))}
-    </div> */}
+    </div>
   </div>
 )
 }

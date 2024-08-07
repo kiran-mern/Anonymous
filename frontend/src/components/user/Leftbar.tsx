@@ -5,7 +5,11 @@ import { useModalStore } from '../../zustand/store';
 
 const Leftbar  = () => {
   const navigate = useNavigate();
-  const { setShowModal,setIsOpen } = useModalStore();
+  const { setShowModal,setIsOpen ,userId} = useModalStore();
+  console.log(userId,'userId');
+  
+  
+  // const userId=
   const [showDropdown, setShowDropdown] = useState(false)
   const [showAppearance, setShowAppearance] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -52,7 +56,7 @@ const Leftbar  = () => {
           <li className="mb-4">
             <button className="text-white" onClick={handleCreateClick}>Create</button>
           </li>
-          <li className="mb-4"><Link to="/profile" className="text-white">Profile</Link></li>
+          <li className="mb-4"><Link to={`/viewProfile/${userId}`} className="text-white">Profile</Link></li>
           <li className="mb-4">
             <button className="text-white" onClick={toggleDropdown}>More</button>
             {showDropdown && (
