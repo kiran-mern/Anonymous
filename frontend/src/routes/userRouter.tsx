@@ -25,7 +25,7 @@ const userRouter = () => {
                 <Route path='/find' element={<FindConnection/>} />
                 <Route path='/notification' element={<Notification/>}/>
                 <Route path='/groupMembers/:groupId' element={<GroupDetails/>}/>
-                <Route path='/userProfile' element={<Profile/>} />
+                <Route path='/userProfile/:userId' element={<Profile/>} />
                 
 
 

@@ -478,11 +478,12 @@ module.exports = {
     viewById:async(req,res)=>{
         try{
             const userId= req.user.user_id;
-            const {receiverId}=req.body;
-            console.log(req.body,'bofy');
+            const {receiverId}=req.query;
+            console.log(req.query,'bofy');
             const viewPost=await uHelpers.viewIndividualPosts(receiverId)
-            console.log(viewPost,'viewPost');
-            return res.status(200).json({message:'fetching  all posts successfully',viewPost})
+            const user=await uHelpers.findId(receiverId)
+            console.log(viewPost,user,'viewPost');
+            return res.status(200).json({message:'fetching  all posts successfully',viewPost,user})
         }
         catch(err){
             console.log(err,'error while fething individual posts ')

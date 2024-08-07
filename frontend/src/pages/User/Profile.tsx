@@ -1,4 +1,4 @@
-import UserProfile from "../../components/common/UserProfile"
+import UserProfile from "../../components/user/UserProfile"
 import Leftbar from "../../components/user/Leftbar"
 
 const Profile=()=>{

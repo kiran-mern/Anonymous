@@ -113,16 +113,23 @@ module.exports = {
         const remove = await LikePosts.destroy({
             where: { post_id: pId, user_id: uId },
         });
+        const post = await UserPost.findOne({ where: { post_id: pId } });
+    if (post.countLike > 0) {
+        post.countLike -= 1;
+        await post.save();
+    }
+
         console.log("dLike", remove);
         return remove;
     },
     like: async (pId, uId) => {
         await LikePosts.create({ post_id: pId, user_id: uId });
         const post = await UserPost.findOne({ where: { post_id: pId } });
-        post.likeCount += 1;
+        post.countLike += 1;
+        await post.save();
 
-        console.log(post.likeCount, "like");
-        return post.likeCount;
+        console.log(post.countLike, "like");
+        return post.countLike;
     },
     countLikes: async (pId) => {
         const count = await LikePosts.count({ where: { post_id: pId } });

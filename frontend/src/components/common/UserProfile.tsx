@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 type Post={
     id:number,
@@ -9,14 +9,19 @@ type Post={
 }
 
 type UserProfileProps={
-    displayName:string,
+    // displayName:string,
     name:string,
     connectionsCount:number,
     postsCount:number,
     posts:Post[]
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({displayName,name,connectionsCount,postsCount,posts})=>{
+
+
+
+const UserProfile: React.FC<UserProfileProps> = ({name,connectionsCount,postsCount,posts})=>{
+    console.log({name,connectionsCount,posts,postsCount});
+    
 return(
     <div className=" h-screen flex-grow  bg-black text-white p-6">
     <div className="flex items-center justify-between mb-6">
@@ -25,7 +30,7 @@ return(
           {/* {displayName.charAt(0)} */}
         </div>
         <div>
-          <h2 className="text-2xl font-bold">{displayName}</h2>
+          <h2 className="text-2xl font-bold">{name}</h2>
           <p className="text-gray-400">@{name}</p>
         </div>
       </div>

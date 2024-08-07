@@ -3,6 +3,7 @@ import axios from 'axios';
 import Like from './LikePost'
 import {Comment,CommentModal} from './Comment'
 import NoStyleComment from './NoStyleComment';
+import { Link } from 'react-router-dom';
 type Post={
   post_id: number,
   user_id:string,
@@ -67,8 +68,11 @@ const Post = () => {
       
        <div key={post.post_id} className="bg-black text-white p-4 mb-4 border-b border-gray-600 ">
        <div className="flex items-center mb-2">
+        <Link className='flex' to={`/userProfile/${post.user_id}`}> 
+        
          <div className="w-10 h-10 bg-yellow-500 rounded-full mr-4"></div>
          <h2 className="font-bold">{post.user_id}</h2>
+        </Link>
          <button className="ml-16 bg-gray-700 px-4 py-1 rounded">Connect</button>
        </div>
        <p className="mb-2">
