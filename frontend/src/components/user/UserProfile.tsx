@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import UserProfile from '../common/UserProfile'
+import { useModalStore } from '../../zustand/store'
 import { useParams } from 'react-router-dom'
 
 type Post={
@@ -12,7 +13,6 @@ type Post={
 }
 
 type UserData={
-    // displayName:string,
     name:string,
     connectionsCount:number,
     postsCount:number,
@@ -26,6 +26,7 @@ const UserProfiles = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { userId } = useParams<{ userId: string }>();
+    const loggedUserId=useModalStore((state)=>state.userId)?.toString
 
     const token=localStorage.getItem('user')
     
@@ -80,8 +81,9 @@ const UserProfiles = () => {
       if (!userData) {
         return <div>No user data available</div>;
       }
+      const isMyProfile = loggedUserId === userId;
   return (
-    <UserProfile name={userData.name} connectionsCount={userData.connectionsCount}
+    <UserProfile name={userData.name} connectionsCount={isMyProfile?userData.connectionsCount:0}
      postsCount={userData.postsCount} posts={userData.posts}  />
 )
 }

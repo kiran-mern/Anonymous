@@ -56,7 +56,7 @@ const Leftbar  = () => {
           <li className="mb-4">
             <button className="text-white" onClick={handleCreateClick}>Create</button>
           </li>
-          <li className="mb-4"><Link to={`/viewProfile/${userId}`} className="text-white">Profile</Link></li>
+          <li className="mb-4"><Link to={`/userProfile/${userId}`} className="text-white">Profile</Link></li>
           <li className="mb-4">
             <button className="text-white" onClick={toggleDropdown}>More</button>
             {showDropdown && (
