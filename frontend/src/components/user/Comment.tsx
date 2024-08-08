@@ -4,6 +4,7 @@ import axios from 'axios'
 type Comment={
 
     post_id:number,
+    // countComment:number,
     openModal:(postId:number)=>void
 
 }
@@ -24,16 +25,17 @@ type CommentType={
     content:string
 }
 
-const Comment:React.FC<Comment> = ({post_id,openModal}) => {
+const Comment:React.FC<Comment> = ({post_id,openModal,countComment}) => {
   return (
     <button onClick={()=>openModal(post_id)} >
-        Comments
+      {countComment}  Comments
     </button>
   )
 }
 
 const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postContent, likes, commentsCount })=>{
     const [comment,setComment]=useState <CommentType[]>([])
+    const [countComment,setCountComment]=useState<Comment []>([])
     const [newComment,setNewComment]=useState('')
     // const [postContent,setPostContent]= useState('')
     const token= localStorage.getItem('user')
@@ -53,6 +55,7 @@ const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postCon
                 params:{post_id:postId}
             })
             setComment(response.data.data)
+            setCountComment(response.data.commentsCount)
         }
         catch(err){
             console.log('error while fetching comments',err);

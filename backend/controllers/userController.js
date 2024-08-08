@@ -277,7 +277,8 @@ module.exports = {
             const post_id= req.query.post_id
             // console.log(post_id,'kk')
             const data = await uHelpers.getComments(post_id)
-            return res.status(200).json({ message: 'view comments', data })
+            const commentsCount= data.length
+            return res.status(200).json({ message: 'view comments', data,commentsCount })
         }
         catch (err) {
             console.log(err, 'error while view comments');

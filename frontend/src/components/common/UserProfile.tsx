@@ -34,10 +34,15 @@ return(
           <p className="text-gray-400">@{name}</p>
         </div>
       </div>
-      <button className="bg-gray-800 px-4 py-2 rounded-md">Edit profile</button>
+      
+      {connectionsCount > 0 ? <button className="bg-gray-800 px-4 py-2 rounded-md">Edit profile</button>
+      : <div className="flex items-center">
+            <button className="text-gray-400">...</button>
+    </div> }
     </div>
     <div className="flex mb-6">
       <p className="mr-6">{postsCount} posts</p>
+
       {connectionsCount>0 &&  <p>{connectionsCount} connections</p>}
      
     </div>

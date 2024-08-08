@@ -8,7 +8,7 @@ type Post={
   post_id: number,
   user_id:string,
   content: string,
-  likes:number,
+  countLikes:number,
   comments:number
 }
 const Post = () => {
@@ -37,26 +37,27 @@ const Post = () => {
     setModalOpen(false);
     setSelectedPostId(null);
   };
-  useEffect(()=>{
-    const fetchData=async()=>{
-      try{
+  const fetchData=async()=>{
+    try{
 
-        const response= await axios.get('http://localhost:3000/user/home',{
-          headers:{
-            authorization: `${token}`
-          }
-        })
-        console.log(response,'res');
-        setPosts(response.data.data)
-        
-        
+      const response= await axios.get('http://localhost:3000/user/home',{
+        headers:{
+          authorization: `${token}`
+        }
+      })
+      console.log(response.data.data)
+      setPosts(response.data.data)
+      console.log(posts,'res');
+      
+      
 
-      }catch(error){
-        console.log('error while fetching data ',error);
-        
-        
-      }
+    }catch(error){
+      console.log('error while fetching data ',error);
+      
+      
     }
+  }
+  useEffect(()=>{
     fetchData();
     
   },[token])
@@ -81,7 +82,7 @@ const Post = () => {
 
        <div className="flex">
          {/* <span className="mr-4">{like[post.id] || 0} likes</span> */}
-         <span className='mr-4'> <Like post_id={post.post_id} likes={post.likes} onUpdateLike={likeUpdate} /></span>
+         <span className='mr-4'> <Like post_id={post.post_id} likes={post.countLikes} onUpdateLike={likeUpdate} /></span>
         
          {/* <span>{post.comments} comments</span> */}
          <span> <Comment  post_id={post.post_id}  openModal={() => openModal(post.post_id)}/></span>
@@ -99,7 +100,7 @@ const Post = () => {
           isOpen={modalOpen}
           onClose={closeModal}
           postContent={posts.find(p => p.post_id === selectedPostId)?.content || ''}
-          likes={posts.find(p => p.post_id === selectedPostId)?.likes || 0}
+          likes={posts.find(p => p.post_id === selectedPostId)?.countLikes || 0}
           commentsCount={posts.find(p => p.post_id === selectedPostId)?.comments || 0}
         />
       )}

@@ -9,9 +9,11 @@ type LikeButton={
 
 const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
 
+    console.log(likes);
     const [useLike,setUseLike]= useState(likes)
     useEffect(() => {
         setUseLike(likes);
+        
     }, [likes]);
 
     const token= localStorage.getItem('user')
@@ -24,7 +26,7 @@ const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
             })
             const newLike=response.data.likeCount
             setUseLike(newLike)
-            console.log(response,'ooo');
+            console.log(response,useLike,'ooo');
             
             onUpdateLike(post_id,newLike)
 
@@ -37,7 +39,7 @@ const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
     }
   return (
     // <div>LikePost</div>
-    <button onClick={handleLike}>{useLike|| 0} Likes</button>
+    <button onClick={handleLike}>{useLike} Likes</button>
   )
 }
 
