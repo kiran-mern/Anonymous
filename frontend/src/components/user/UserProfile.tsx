@@ -26,7 +26,10 @@ const UserProfiles = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { userId } = useParams<{ userId: string }>();
-    const loggedUserId=useModalStore((state)=>state.userId)?.toString
+    console.log(userId,'iserId of friend');
+    
+    const loggedUserId=useModalStore((state)=>state.userId)
+console.log(loggedUserId);
 
     const token=localStorage.getItem('user')
     
@@ -42,11 +45,11 @@ const UserProfiles = () => {
                 })
                 console.log(response.data,'usesa profile data');
 
-                const{viewPost,user}=response.data
+                const{viewPost,user,connectionCount}=response.data
 
                 const formattedUseData:UserData={
                     name:user.name,
-                    connectionsCount:user.connection_count,
+                    connectionsCount:connectionCount,
                     postsCount:viewPost.length,
                     posts:viewPost.map((post:any)=>({
                         id:post.id,
@@ -81,7 +84,7 @@ const UserProfiles = () => {
       if (!userData) {
         return <div>No user data available</div>;
       }
-      const isMyProfile = loggedUserId === userId;
+      const isMyProfile = loggedUserId==userId ;
   return (
     <UserProfile name={userData.name} connectionsCount={isMyProfile?userData.connectionsCount:0}
      postsCount={userData.postsCount} posts={userData.posts}  />

@@ -513,5 +513,23 @@ module.exports = {
             console.log(err,'error while viewing the posts of individual users');
 
         }
+    },
+    countConnection:async(uId)=>{
+
+        try {
+            const count = await Connection.count({
+                where: {
+                    status: 'accepted',
+                    [Op.or]: [
+                        { sender_id: uId },
+                        { receiver_id: uId }
+                    ]
+                }
+            });
+            return count;
+        } catch (error) {
+            console.log('Error counting connections:', error);
+            throw error;
+        }
     }
 };

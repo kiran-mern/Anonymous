@@ -38,7 +38,8 @@ return(
     </div>
     <div className="flex mb-6">
       <p className="mr-6">{postsCount} posts</p>
-      <p>{connectionsCount} connections</p>
+      {connectionsCount>0 &&  <p>{connectionsCount} connections</p>}
+     
     </div>
     <h3 className="text-xl font-bold mb-4">POSTS</h3>
     <div className="space-y-4">

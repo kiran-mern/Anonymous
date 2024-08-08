@@ -483,7 +483,8 @@ module.exports = {
             const viewPost=await uHelpers.viewIndividualPosts(receiverId)
             const user=await uHelpers.findId(receiverId)
             console.log(viewPost,user,'viewPost');
-            return res.status(200).json({message:'fetching  all posts successfully',viewPost,user})
+            const connectionCount=await uHelpers.countConnection(userId)
+            return res.status(200).json({message:'fetching  all posts successfully',viewPost,user,connectionCount})
         }
         catch(err){
             console.log(err,'error while fething individual posts ')
