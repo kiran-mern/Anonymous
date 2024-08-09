@@ -145,6 +145,12 @@ module.exports = {
         console.log(result, "cmmnt result");
         return result;
     },
+    countComment:async(pId)=>{
+       const post=await UserPost.findOne({where:{post_id:pId}})
+       post.countComment+=1
+       await post.save();
+       return post.countComment;
+    },
     getComments: async (data) => {
         const result = await Comments.findAll({
             where: { post_id: data },

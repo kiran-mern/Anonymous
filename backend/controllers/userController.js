@@ -264,7 +264,9 @@ module.exports = {
 
             const user_id=req.user.user_id;
             const data = await uHelpers.addComment(post_id, user_id, content);
-            return res.status(200).json({ message: 'comments added', data })
+            const commentCount=await uHelpers.countComment(post_id)
+            console.log(commentCount,'co,,,e');
+            return res.status(200).json({ message: 'comments added', data,commentCount })
         }
         catch (err) {
             console.log('Error on comment section', err);

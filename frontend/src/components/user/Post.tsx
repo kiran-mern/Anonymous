@@ -9,10 +9,10 @@ type Post={
   user_id:string,
   content: string,
   countLikes:number,
+  countComment:number,
   comments:number
 }
 const Post = () => {
-
   const[posts,setPosts]=useState<Post[]>([]);
   const [modalOpen,setModalOpen]=useState(false)
   const [selectedPostId,setSelectedPostId]=useState<number| null>(null);
@@ -25,7 +25,12 @@ const Post = () => {
     ));
 
   }
-  
+  const commentUpdate=(post_id:number,commentCount:number)=>{
+
+    setPosts(posts.map(post =>
+      post.post_id === post_id ? { ...post, countComment: commentCount } : post
+    ));
+  }
  
 
   const openModal = (postId: number) => {
@@ -47,6 +52,8 @@ const Post = () => {
       })
       console.log(response.data.data)
       setPosts(response.data.data)
+     
+      
       console.log(posts,'res');
       
       
@@ -85,7 +92,7 @@ const Post = () => {
          <span className='mr-4'> <Like post_id={post.post_id} likes={post.countLikes} onUpdateLike={likeUpdate} /></span>
         
          {/* <span>{post.comments} comments</span> */}
-         <span> <Comment  post_id={post.post_id}  openModal={() => openModal(post.post_id)}/></span>
+         <span> <Comment  post_id={post.post_id}  commentsCount={post.countComment}  openModal={() => openModal(post.post_id)}/></span>
 
        </div>
        {/* <input type='text' className=" w-full h-auto border-none bg-transparent outline-none placeholder-gray-500 resize-none overflow-hidden"
@@ -101,7 +108,8 @@ const Post = () => {
           onClose={closeModal}
           postContent={posts.find(p => p.post_id === selectedPostId)?.content || ''}
           likes={posts.find(p => p.post_id === selectedPostId)?.countLikes || 0}
-          commentsCount={posts.find(p => p.post_id === selectedPostId)?.comments || 0}
+          commentsCount={posts.find(p => p.post_id === selectedPostId)?.countComment || 0}
+          onUpdateCommentCount={commentUpdate}
         />
       )}
 

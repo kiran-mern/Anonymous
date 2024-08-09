@@ -4,7 +4,7 @@ import axios from 'axios'
 type Comment={
 
     post_id:number,
-    // countComment:number,
+    commentsCount:number,
     openModal:(postId:number)=>void
 
 }
@@ -15,6 +15,7 @@ type CommentModalProps={
     postContent: string;
     likes: number;
     commentsCount: number;
+    onUpdateCommentCount: (post_id: number, newCommentCount: number) => void
 
 
 }
@@ -25,24 +26,21 @@ type CommentType={
     content:string
 }
 
-const Comment:React.FC<Comment> = ({post_id,openModal,countComment}) => {
+const Comment:React.FC<Comment> = ({post_id,openModal,commentsCount}) => {
   return (
     <button onClick={()=>openModal(post_id)} >
-      {countComment}  Comments
+      {commentsCount}  Comments
     </button>
   )
 }
 
-const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postContent, likes, commentsCount })=>{
+const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postContent, likes, commentsCount,onUpdateCommentCount })=>{
     const [comment,setComment]=useState <CommentType[]>([])
-    const [countComment,setCountComment]=useState<Comment []>([])
     const [newComment,setNewComment]=useState('')
-    // const [postContent,setPostContent]= useState('')
     const token= localStorage.getItem('user')
     useEffect(()=>{
         if(isOpen&& post_id){
             fetchComment(post_id)
-            // fetchPostComment
         }
     },[isOpen,post_id])
 
@@ -55,7 +53,6 @@ const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postCon
                 params:{post_id:postId}
             })
             setComment(response.data.data)
-            setCountComment(response.data.commentsCount)
         }
         catch(err){
             console.log('error while fetching comments',err);
@@ -75,8 +72,9 @@ const CommentModal:React.FC<CommentModalProps>=({post_id,isOpen,onClose, postCon
                      authorization: `${token}` }
               });
             setNewComment('')
-            fetchComment(post_id)
-
+            const newCommentCount = commentsCount + 1;
+            onUpdateCommentCount(post_id, newCommentCount);
+            fetchComment(post_id);
         }
         catch(err){
             console.log(err,'error adding comment ');

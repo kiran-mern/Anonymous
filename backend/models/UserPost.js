@@ -26,7 +26,10 @@ const UserPost = sequelize.define("UserPost", {
    countLike:{
     type: DataTypes.INTEGER,
     defaultValue: 0
-
+},
+countComment:{
+  type:DataTypes.INTEGER,
+  defaultValue:0
 }
 });
 
