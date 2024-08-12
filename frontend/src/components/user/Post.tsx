@@ -21,7 +21,7 @@ const Post = () => {
 
   const likeUpdate=(post_id:number,newLikes:number)=>{
     setPosts(posts.map(post=>
-      post.post_id===post_id?{...post,likes:newLikes}:post
+      post.post_id===post_id?{...post,countLikes:newLikes}:post
     ));
 
   }

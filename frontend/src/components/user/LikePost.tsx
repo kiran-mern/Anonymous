@@ -7,13 +7,15 @@ type LikeButton={
     onUpdateLike:(post_id:number,newLikes:number)=>void
 }
 
-const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
+const LikePost:React.FC<LikeButton> = ({post_id,likes=0,onUpdateLike}) => {
 
     console.log(likes);
     const [useLike,setUseLike]= useState(likes)
     useEffect(() => {
-        setUseLike(likes);
+        console.log('likes rooops updated',likes);
         
+        setUseLike(likes);
+       
     }, [likes]);
 
     const token= localStorage.getItem('user')
@@ -25,9 +27,10 @@ const LikePost:React.FC<LikeButton> = ({post_id,likes,onUpdateLike}) => {
                 }
             })
             const newLike=response.data.likeCount
-            setUseLike(newLike)
-            console.log(response,useLike,'ooo');
+            console.log(newLike,'1');
             
+            setUseLike(newLike)
+            console.log(response,useLike,'ooo');            
             onUpdateLike(post_id,newLike)
 
         }

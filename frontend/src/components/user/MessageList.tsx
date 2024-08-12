@@ -28,23 +28,23 @@ const MessageList = () => {
     const messages= activeTab==='connected'? [...connected,...connectedGroups]: requested
 
     useEffect(()=>{
-      const fetchRequestedMessage=async()=>{
-        setIsLoading(true)
-        try{
-          const response= await axios.get('http://localhost:3000/user/requested',{
-          headers:{
-            authorization:`${token}`
-          }
-        });
-        console.log(response);
+      // const fetchRequestedMessage=async()=>{
+      //   setIsLoading(true)
+      //   try{
+      //     const response= await axios.get('http://localhost:3000/user/requested',{
+      //     headers:{
+      //       authorization:`${token}`
+      //     }
+      //   });
+      //   console.log(response);
         
-        const data=await response.data.requested
-        setRequested(data)
-        }
-        catch(err){
-          console.log(err,'not fetching requested');
-        }
-      }
+      //   const data=await response.data.requested
+      //   setRequested(data)
+      //   }
+      //   catch(err){
+      //     console.log(err,'not fetching requested');
+      //   }
+      // }
       const fetchConnectedMessage=async()=>{
         try{
           const response= await axios.get('http://localhost:3000/user/connected',{
@@ -66,7 +66,7 @@ const MessageList = () => {
       }
       fetchConnectedMessage()
       
-      fetchRequestedMessage()
+      // fetchRequestedMessage()
 
     },[activeTab,token, setConnected, setRequested])
     
