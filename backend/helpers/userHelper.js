@@ -114,10 +114,10 @@ module.exports = {
             where: { post_id: pId, user_id: uId },
         });
         const post = await UserPost.findOne({ where: { post_id: pId } });
-    if (post.countLike > 0) {
-        post.countLike -= 1;
-        await post.save();
-    }
+        if (post.countLike > 0) {
+            post.countLike -= 1;
+            await post.save();
+        }
 
         console.log("dLike", remove);
         return remove;
@@ -145,11 +145,11 @@ module.exports = {
         console.log(result, "cmmnt result");
         return result;
     },
-    countComment:async(pId)=>{
-       const post=await UserPost.findOne({where:{post_id:pId}})
-       post.countComment+=1
-       await post.save();
-       return post.countComment;
+    countComment: async (pId) => {
+        const post = await UserPost.findOne({ where: { post_id: pId } })
+        post.countComment += 1
+        await post.save();
+        return post.countComment;
     },
     getComments: async (data) => {
         const result = await Comments.findAll({
@@ -508,19 +508,21 @@ module.exports = {
         }
 
     },
-    viewIndividualPosts:async(rId)=>{
-        try{
-            const post=await UserPost.findAll({where:{
-                user_id:rId
-            }})
+    viewIndividualPosts: async (rId) => {
+        try {
+            const post = await UserPost.findAll({
+                where: {
+                    user_id: rId
+                }
+            })
             return post
 
-        }catch(err){
-            console.log(err,'error while viewing the posts of individual users');
+        } catch (err) {
+            console.log(err, 'error while viewing the posts of individual users');
 
         }
     },
-    countConnection:async(uId)=>{
+    countConnection: async (uId) => {
 
         try {
             const count = await Connection.count({
@@ -537,5 +539,23 @@ module.exports = {
             console.log('Error counting connections:', error);
             throw error;
         }
+    },
+    groupsAvailable: async (uId) => {
+        const result = await GroupMember.findAll({
+            where:
+                { user_id: uId },
+            include: [
+                {
+                    model: Group,
+                    attributes: ['groupName']
+
+                }]
+        })
+        console.log(result, 'result result')
+        const groups = result.map(member => ({
+            groupId: member.Group.groupId,
+            groupName: member.Group.groupName
+        }));
+        return groups
     }
 };

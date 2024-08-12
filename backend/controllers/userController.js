@@ -492,6 +492,13 @@ module.exports = {
         catch(err){
             console.log(err,'error while fething individual posts ')
         }
+    },
+    currentGroups:async(req,res)=>{
+        const user_id=req.user.user_id;
+        console.log('dfghjk',user_id);
+        const group=await uHelpers.groupsAvailable(user_id)
+        return res.status(200).json({message:'all groups for members',group})
+
     }
 
     

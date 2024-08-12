@@ -4,6 +4,8 @@ import Post from './Post';
 import { useModalStore } from '../../zustand/store';
 import CreatePost from './CreatePost';
 import DeactivateModal from './DeactivateModal';
+import JoinedGroups from './JoinedGroups';
+
 
 const Header = () => {
 
@@ -12,11 +14,13 @@ const Header = () => {
         <div className="flex">
             <Leftbar />
             <div className="flex-1 bg-black text-white p-4 overflow-y-auto">
-                <div className="flex justify-center space-x-4 mb-4">
+            <JoinedGroups/>
+
+                {/* <div className="flex justify-center space-x-4 mb-4">
                     {[...Array(8)].map((_, i) => (
                         <div key={i} className="w-12 h-12 bg-gray-700 rounded-full"></div>
                     ))}
-                </div>
+                </div> */}
                 <div className="border border-gray-600">
                     <Post />
                 </div>
