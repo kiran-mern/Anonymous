@@ -76,10 +76,123 @@ module.exports = {
             throw err;
         }
     },
-    viewAll: async () => {
-        const view = await UserPost.findAll({});
-        // console.log(view,'view')
-        return view;
+    // viewAll: async () => {
+    //     const view = await UserPost.findAll({});
+    //     // console.log(view,'view')
+    //     return view;
+    // },
+    // viewAll:async(uId)=>{
+    //     try{
+    //         const connection=await Connection.findAll({
+    //             where:{
+    //                 [Op.or]:[{sender_id:uId},,{receiver_id:uId}],
+    //                 status:'accepted'
+    //             },
+    //             attributes:['sender_id','receiver_id']
+    //         })
+    //         const connectedUserId=connection.map(conn=>
+    //         conn.sender_id===uId? conn.receiver_id:conn.sender_id
+    //     )
+    //     const view=await UserPost.findAll({
+    //         include:[
+    //             {
+    //                 model:User,
+    //                 // as:'user',
+    //                 attributes:['user_id','name']
+    //             },
+    //             {
+    //                 model:LikePosts,
+    //                 as:'like',
+    //                 attributes:[[sequelize.fn('COUNT',sequelize.col('likes.id')),'likesCount']],
+    //                 // attributes:[],
+    //                 seperate:true
+    //             },{
+    //                 model:Comments,
+    //                 as:'comments',
+    //                 attributes:[[sequelize.fn('COUNT',sequelize.col('comments.id')),'CommentCount']],
+
+    //             }
+    //         ],
+    //         where:{
+    //             [Op.or]:[
+    //                 {'$User.user_id$':{[Op.in]:connectedUserId}},
+    //                     sequelize.literal(`(SELECT COUNT (*) FROM likes where likes.postId=UserPost.id)>0`),
+    //                     sequelize.literal(`(SELECT COUNT (*) FROM comments where comments.postId=userPost.id)>0`)
+                    
+    //             ]
+    //         },
+    //         order:[
+    //             ['createdAt', 'DESC'],
+    //             [sequelize.literal('(SELECT COUNT(*) FROM likes WHERE likes.postId = UserPost.id)'), 'DESC'],
+    //             [sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = UserPost.id)'), 'DESC']
+    //         ],
+    //         group: ['UserPost.id', 'User.user_id'],
+    //     });
+    //     return view;
+
+    //     }catch(err){
+    //         console.log(err,'error on home page');
+    //     }
+
+    // },
+    viewAll: async (uId) => {
+        try {
+            const connection = await Connection.findAll({
+                where: {
+                    [Op.or]: [{ sender_id: uId }, { receiver_id: uId }],
+                    status: 'accepted'
+                },
+                attributes: ['sender_id', 'receiver_id']
+            });
+            
+            const connectedUserId = connection.map(conn =>
+                conn.sender_id === uId ? conn.receiver_id : conn.sender_id
+            );
+            
+            const view = await UserPost.findAll({
+                include: [
+                    {
+                        model: User,
+                        attributes: ['user_id', 'name']
+                    },
+                    {
+                        model: LikePosts,
+                        as: 'likes',
+                        attributes: [],
+                    },
+                    {
+                        model: Comments,
+                        as: 'comments',
+                        attributes: [],
+                    }
+                ],
+                attributes: [
+                    'post_id',
+                    'content',
+                    'createdAt',
+                    [sequelize.fn('COUNT', sequelize.col('likes.id')), 'likeCount'],
+                    [sequelize.fn('COUNT', sequelize.col('comments.id')), 'commentCount']
+                ],
+                where: {
+                    [Op.or]: [
+                        { '$User.user_id$': { [Op.in]: connectedUserId } },
+                        sequelize.literal(`(SELECT COUNT(*) FROM "Likes" WHERE "Likes"."post_id" = "UserPost"."post_id") > 0`),
+                        sequelize.literal(`(SELECT COUNT(*) FROM "Comments" WHERE "Comments"."post_id" = "UserPost"."post_id") > 0`)
+                    ]
+                },
+                order: [
+                    ['createdAt', 'DESC'],
+                    [sequelize.literal('(SELECT COUNT(*) FROM "Likes" WHERE "Likes"."post_id" = "UserPost"."post_id")'), 'DESC'],
+                    [sequelize.literal('(SELECT COUNT(*) FROM "Comments" WHERE "Comments"."post_id" = "UserPost"."post_id")'), 'DESC']
+                ],
+                group: ['UserPost.post_id', 'User.user_id', 'User.name'],
+            });
+            
+            return view;
+        } catch (err) {
+            console.log(err, 'error on home page');
+            throw err;
+        }
     },
     findLike: async (pId, uId) => {
         const find = await LikePosts.findOne({

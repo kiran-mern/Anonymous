@@ -28,8 +28,9 @@ const UserProfiles = () => {
     const { userId } = useParams<{ userId: string }>();
     console.log(userId,'iserId of friend');
     
-    const loggedUserId=useModalStore((state)=>state.userId)
-console.log(loggedUserId);
+//     const loggedUserId=useModalStore((state)=>state.userId)
+// console.log(loggedUserId);
+const loggedUserId= localStorage.getItem('userId')
 
     const token=localStorage.getItem('user')
     

@@ -5,7 +5,8 @@ import { useModalStore } from '../../zustand/store';
 
 const Leftbar  = () => {
   const navigate = useNavigate();
-  const { setShowModal,setIsOpen ,userId} = useModalStore();
+  const { setShowModal,setIsOpen,userId } = useModalStore();
+  // const userId=localStorage.getItem('userId')
   console.log(userId,'userId');
   
   

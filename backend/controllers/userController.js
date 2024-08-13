@@ -117,7 +117,8 @@ module.exports = {
         }
     },
     home: async (req, res) => {
-        const posts = await uHelpers.viewAll()
+        const userId= req.user.user_id;
+        const posts = await uHelpers.viewAll(userId)
         console.log(posts, 'post');
         return res.status(200).json({ message: 'home page', data: posts })
 
