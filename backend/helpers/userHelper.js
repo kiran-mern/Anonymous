@@ -647,15 +647,16 @@ module.exports = {
             include: [
                 {
                     model: Group,
-                    attributes: ['groupName']
+                    attributes: ['groupName','group_id']
 
                 }]
         })
         console.log(result, 'result result')
         const groups = result.map(member => ({
-            groupId: member.Group.groupId,
+            groupId: member.Group. group_id,
             groupName: member.Group.groupName
         }));
+        // console.log(groups,'kanjii');
         return groups
     }
 };

@@ -24,7 +24,7 @@ const ChatArea = () => {
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
   // const type = isGroup ? 'group' : 'user'  
-  console.log(selectedUser);
+  console.log(selectedUser,'select varuninda');
   // console.log(type,'typr');
   
   

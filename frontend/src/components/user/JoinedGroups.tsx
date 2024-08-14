@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../zustand/store'
 
 type Group = {
-    groupName: string,
+    profileName: string,
     groupId: number,
 }
 
@@ -16,6 +16,8 @@ const JoinedGroups = () => {
     // const {sel}=useModalStore
     const handleGroupClick = (groupId: number) => {
         const selectedGroup = connectedGroups.find(group => group.groupId === groupId)
+        console.log(selectedGroup,'ndhokkeyello nadallunong');
+        
         if (selectedGroup) {
             setSelectedUser(selectedGroup);
             navigate('/message')
@@ -44,6 +46,8 @@ const JoinedGroups = () => {
                 console.log(response, 'varuaayrkkum');
 
                 const groupsData = response.data.group
+                console.log('alli thikku',groupsData);
+                
                 setGroups(groupsData)
                 setConnectedGroups(groupsData)
 
@@ -78,9 +82,9 @@ const JoinedGroups = () => {
                             {/* <Link to='/message'>  */}
 
                             <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center cursor-pointer">
-                                <span>{group.groupName.charAt(0)}</span> {/* Displaying the first letter of the group name */}
+                                <span>{group.profileName.charAt(0)}</span> {/* Displaying the first letter of the group name */}
                             </div>
-                            <span className="text-sm text-center mt-1">{group.groupName}</span>
+                            <span className="text-sm text-center mt-1">{group.profileName}</span>
                             {/* </Link> */}
 
                         </div>

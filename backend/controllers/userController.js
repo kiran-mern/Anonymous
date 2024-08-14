@@ -497,7 +497,7 @@ module.exports = {
     currentGroups:async(req,res)=>{
         const user_id=req.user.user_id;
         console.log('dfghjk',user_id);
-        const group=await uHelpers.groupsAvailable(user_id)
+        const group=await uHelpers.connectedGroup(user_id)
         return res.status(200).json({message:'all groups for members',group})
 
     }
