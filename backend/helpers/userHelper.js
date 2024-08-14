@@ -133,8 +133,6 @@ module.exports = {
     //     }catch(err){
     //         console.log(err,'error on home page');
     //     }
-
-    // },
     viewAll: async (uId) => {
         try {
             const connection = await Connection.findAll({
@@ -154,38 +152,27 @@ module.exports = {
                     {
                         model: User,
                         attributes: ['user_id', 'name']
-                    },
-                    {
-                        model: LikePosts,
-                        as: 'likes',
-                        attributes: [],
-                    },
-                    {
-                        model: Comments,
-                        as: 'comments',
-                        attributes: [],
                     }
                 ],
                 attributes: [
                     'post_id',
                     'content',
-                    'createdAt',
-                    [sequelize.fn('COUNT', sequelize.col('likes.id')), 'likeCount'],
-                    [sequelize.fn('COUNT', sequelize.col('comments.id')), 'commentCount']
+                    'countLike',
+                    'countComment',
+                    'createdAt'
                 ],
                 where: {
                     [Op.or]: [
                         { '$User.user_id$': { [Op.in]: connectedUserId } },
-                        sequelize.literal(`(SELECT COUNT(*) FROM "Likes" WHERE "Likes"."post_id" = "UserPost"."post_id") > 0`),
-                        sequelize.literal(`(SELECT COUNT(*) FROM "Comments" WHERE "Comments"."post_id" = "UserPost"."post_id") > 0`)
+                        { countLike: { [Op.gt]: 0 } },
+                        { countComment: { [Op.gt]: 0 } }
                     ]
                 },
                 order: [
                     ['createdAt', 'DESC'],
-                    [sequelize.literal('(SELECT COUNT(*) FROM "Likes" WHERE "Likes"."post_id" = "UserPost"."post_id")'), 'DESC'],
-                    [sequelize.literal('(SELECT COUNT(*) FROM "Comments" WHERE "Comments"."post_id" = "UserPost"."post_id")'), 'DESC']
-                ],
-                group: ['UserPost.post_id', 'User.user_id', 'User.name'],
+                    ['countLike', 'DESC'],
+                    ['countComment', 'DESC']
+                ]
             });
             
             return view;
