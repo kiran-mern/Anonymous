@@ -156,6 +156,7 @@ module.exports = {
                 ],
                 attributes: [
                     'post_id',
+                    'user_id',
                     'content',
                     'countLike',
                     'countComment',
@@ -592,7 +593,7 @@ module.exports = {
                 groupName: group.groupName,
                 admin: {
                     user_id: group.admin,
-                    name: group.adminUser.name,
+                    // name: group.adminUser.name,
                 },
                 members: members.map(member => ({
                     user_id: member.user_id,
